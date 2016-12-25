@@ -36,7 +36,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target=".navbar" data-offset="50">
     <!--START SCROLL TOP BUTTON -->
     <a class="scrollToTop" href="#">
         <i class="fa fa-angle-up"></i>
@@ -58,7 +58,7 @@
                                     </div>
                                     <div class="mu-top-phone">
                                         <i class="fa fa-phone"></i>
-                                        <span>(568) 986 652</span>
+                                        <span>(02) 456 789</span>
                                     </div>
                                 </div>
                             </div>
@@ -164,9 +164,9 @@
                 </figure>
             </div>
             <div class="mu-slider-content">
-                <h4>Premiumu Quality Free Template</h4>
+                <h4>Welcome To PBAP</h4>
                 <span></span>
-                <h2>Best Education Template Ever</h2>
+                <h2>We Will Help You To Succeed</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor amet error eius reiciendis eum sint unde eveniet deserunt est debitis corporis temporibus recusandae accusamus.</p>
                 <a href="#" class="mu-read-more-btn">Read More</a>
             </div>
@@ -191,45 +191,15 @@
     </section>
     <!-- End Slider -->
 
-    <!-- Start service  -->
-    <section id="mu-service">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-12">
-                    <div class="mu-service-area">
-                        <!-- Start single service -->
-                        <div class="mu-service-single">
-                            <span class="fa fa-book"></span>
-                            <h3>Learn Online</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima officiis, deleniti dolorem exercitationem praesentium, est!</p>
-                        </div>
-                        <!-- Start single service -->
-                        <!-- Start single service -->
-                        <div class="mu-service-single">
-                            <span class="fa fa-users"></span>
-                            <h3>Expert Teachers</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima officiis, deleniti dolorem exercitationem praesentium, est!</p>
-                        </div>
-                        <!-- Start single service -->
-                        <!-- Start single service -->
-                        <div class="mu-service-single">
-                            <span class="fa fa-table"></span>
-                            <h3>Best Classrooms</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima officiis, deleniti dolorem exercitationem praesentium, est!</p>
-                        </div>
-                        <!-- Start single service -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- End service  -->
+    <div class="mu-title"">
+        <asp:ContentPlaceHolder ID="head" runat="server">
+        </asp:ContentPlaceHolder>
+    </div>
 
-    <asp:ContentPlaceHolder ID="head" runat="server">
-    </asp:ContentPlaceHolder>
-
-    <asp:ContentPlaceHolder ID="body" runat="server">
-    </asp:ContentPlaceHolder>
+    <div class="container">
+        <asp:ContentPlaceHolder ID="body" runat="server">
+        </asp:ContentPlaceHolder>
+    </div>
 
     <!-- Start footer -->
     <footer id="mu-footer">
@@ -277,10 +247,10 @@
                             <div class="mu-footer-widget">
                                 <h4>Contact</h4>
                                 <address>
-                                    <p>P.O. Box 320, Ross, California 9495, USA</p>
-                                    <p>Phone: (415) 453-1568 </p>
-                                    <p>Website: www.markups.io</p>
-                                    <p>Email: info@markups.io</p>
+                                    <p>2627 Mercedes St., Singalong, Metro Manila, PH 1004</p>
+                                    <p>Phone: (02) 123-456 </p>
+                                    <p>Website: www.pbap.com.ph</p>
+                                    <p>Email: contact@pbap.com.ph</p>
                                 </address>
                             </div>
                         </div>
@@ -293,7 +263,7 @@
         <div class="mu-footer-bottom">
             <div class="container">
                 <div class="mu-footer-bottom-area">
-                    <p>&copy; All Right Reserved. Designed by <a href="http://www.markups.io/" rel="nofollow">MarkUps.io</a></p>
+                    <p>&copy; All Right Reserved. Designed by <a href="#" rel="nofollow">Robert Steven Tomas | 2016</a></p>
                 </div>
             </div>
         </div>
