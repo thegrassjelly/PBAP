@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -11,14 +12,46 @@ public partial class Seminars : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        //Helper.ValidateUser();
-
         if (!IsPostBack)
         {
             GetSpeakers();
             GetTopics();
             GetSeminars();
             GetCurrentWeek();
+            GetAccountInfo();
+        }
+    }
+
+    private void GetAccountInfo()
+    {
+        if (Session["userid"] != null)
+        {
+            pnlUser.Visible = true;
+            pnlGuest.Visible = false;
+
+            using (SqlConnection con = new SqlConnection(Helper.GetCon()))
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                con.Open();
+                cmd.Connection = con;
+                cmd.CommandText = "SELECT UserFirstName FROM Users WHERE UserID = @id";
+                cmd.Parameters.AddWithValue("@id", Session["userid"].ToString());
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            ltUserName.Text = dr["UserFirstName"].ToString();
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            pnlUser.Visible = false;
+            pnlGuest.Visible = true;
         }
     }
 
@@ -99,7 +132,7 @@ public partial class Seminars : System.Web.UI.Page
 
     protected void lvSeminars_DataBound(object sender, EventArgs e)
     {
-        
+
     }
 
     protected void lvSeminars_PagePropertiesChanging(object sender, PagePropertiesChangingEventArgs e)
@@ -124,15 +157,18 @@ public partial class Seminars : System.Web.UI.Page
 
     protected void lvSeminars_ItemCommand(object sender, ListViewCommandEventArgs e)
     {
-        if (e.CommandName == "topicDesc")
-        {
-            Literal ltSeminarID = (Literal)e.Item.FindControl("ltSeminarID");
+        Literal ltSeminarID = (Literal)e.Item.FindControl("ltSeminarID");
 
-            using (SqlConnection con = new SqlConnection(Helper.GetCon()))
-            using (SqlCommand cmd = new SqlCommand())
+        using (SqlConnection con = new SqlConnection(Helper.GetCon()))
+        using (SqlCommand cmd = new SqlCommand())
+        {
+            con.Open();
+            cmd.Connection = con;
+
+            ReservationModalHides();
+
+            if (e.CommandName == "topicDesc")
             {
-                con.Open();
-                cmd.Connection = con;
                 cmd.CommandText = @"SELECT SeminarTitle, SeminarDescription FROM Seminars WHERE SeminarID = @id";
                 cmd.Parameters.AddWithValue("@id", ltSeminarID.Text);
                 SqlDataReader dr = cmd.ExecuteReader();
@@ -144,14 +180,55 @@ public partial class Seminars : System.Web.UI.Page
                         ltModalDesc.Text = dr["SeminarDescription"].ToString();
                     }
                 }
-            }
 
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "topicDesc", "$('#topicDesc').modal();", true);
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "topicDesc", "$('#topicDesc').modal();", true);
+            }
+            else
+            {
+                cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
+                    SeminarLocation, SeminarDate, 
+                    (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
+                    FROM Seminars
+                    INNER JOIN SeminarSpeakers ON Seminars.SeminarSpeaker = SeminarSpeakers.SeminarSpeakerID 
+                    WHERE SeminarID = @id";
+                cmd.Parameters.AddWithValue("@id", ltSeminarID.Text);
+                SqlDataReader dr = cmd.ExecuteReader();
+                if (dr.HasRows)
+                {
+                    if (dr.Read())
+                    {
+                        ltRsvpHeader.Text = dr["SeminarTitle"].ToString();
+                        ltRsvpArea.Text = dr["SeminarArea"].ToString();
+                        ltRsvpDate.Text = dr["SeminarDate"].ToString();
+                        ltRsvpUnits.Text = dr["SeminarUnits"].ToString();
+                        ltRsvpSpeaker.Text = dr["Speaker"].ToString();
+                        ltRsvpVenue.Text = dr["SeminarLocation"].ToString();
+                    }
+                }
+
+                OpenReservationModal();
+            }
+        }
+    }
+
+    void ReservationModalHides()
+    {
+        if (Session["userid"] == null)
+        {
+            pnlAccount.Visible = true;
+            pnlReserve.Visible = false;
+
         }
         else
         {
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "reserveSeminar", "$('#reserveSeminar').modal();", true);
+            pnlAccount.Visible = false;
+            pnlReserve.Visible = true;
         }
+    }
+
+    void OpenReservationModal()
+    {
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "reserveSeminar", "$('#reserveSeminar').modal();", true);
     }
 
     protected void txtDate_TextChanged(object sender, EventArgs e)
@@ -189,6 +266,168 @@ public partial class Seminars : System.Web.UI.Page
         else
         {
             GetSeminars();
+        }
+    }
+
+    bool CheckCaptcha()
+    {
+        bool isHuman = regCaptcha.Validate(txtCaptcha.Text);
+
+        txtCaptcha.Text = null;
+
+        return isHuman;
+    }
+
+    protected void btnRegister_Click(object sender, EventArgs e)
+    {
+        if (CheckCaptcha())
+        {
+            captchaerror.Visible = false;
+
+            if (!isExist())
+            {
+                emailerror.Visible = false;
+
+                using (SqlConnection con = new SqlConnection(Helper.GetCon()))
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    try
+                    {
+                        servererror.Visible = false;
+
+                        con.Open();
+                        cmd.Connection = con;
+
+                        cmd.CommandText = @"INSERT INTO Users
+                            (UserFirstName, UserLastName, UserMidName, UserCompany, UserPosition, UserEmail,
+                            UserMobileNo, UserAddress, UserPassword, UserStatus, UserType, DateAdded, UserIP) VALUES
+                            (@fn, @mn, @ln, @comp, @pos, @email, @mobile, @addr, @pass, @status, @type, @dadded, @ip);
+                            SELECT TOP 1 UserID FROM Users ORDER BY UserID DESC";
+                        cmd.Parameters.AddWithValue("@fn", txtFN.Text);
+                        cmd.Parameters.AddWithValue("@mn", txtMN.Text);
+                        cmd.Parameters.AddWithValue("@ln", txtLN.Text);
+                        cmd.Parameters.AddWithValue("@comp", txtCompany.Text);
+                        cmd.Parameters.AddWithValue("@pos", txtPosition.Text);
+                        cmd.Parameters.AddWithValue("@email", txtEmailReg.Text);
+                        cmd.Parameters.AddWithValue("@mobile", txtMobile.Text);
+                        cmd.Parameters.AddWithValue("@addr", txtAddress.Text);
+                        cmd.Parameters.AddWithValue("@pass", Helper.CreateSHAHash(txtPasswordReg.Text));
+                        cmd.Parameters.AddWithValue("@status", "Active");
+                        cmd.Parameters.AddWithValue("@type", "User");
+                        cmd.Parameters.AddWithValue("@dadded", DateTime.Now);
+                        cmd.Parameters.AddWithValue("@ip", GetUserIP());
+                        int userid = (int)cmd.ExecuteScalar();
+
+                        cmd.CommandText = "SELECT UserID, UserType FROM Users WHERE Email=@Email AND " +
+                            "UserID = @id";
+                        cmd.Parameters.AddWithValue("@Email", txtEmailReg.Text);
+                        cmd.Parameters.AddWithValue("@id", userid);
+                        using (SqlDataReader data = cmd.ExecuteReader())
+                        {
+                            if (data.HasRows)
+                            {
+                                while (data.Read())
+                                {
+                                    Session["userid"] = data["UserID"].ToString();
+                                    Session["typeid"] = data["UserType"].ToString();
+                                }
+
+                            }
+                        }
+
+                        ReservationModalHides();
+                    }
+                    catch
+                    {
+                        servererror.Visible = true;
+                    }
+                }
+            }
+            else
+            {
+                emailerror.Visible = true;
+            } 
+        }
+        else
+        {
+            captchaerror.Visible = true;
+        }
+
+    }
+
+    private bool isExist()
+    {
+        bool existing = false;
+
+        using (SqlConnection con = new SqlConnection(Helper.GetCon()))
+        using (SqlCommand cmd = new SqlCommand())
+        {
+            con.Open();
+            cmd.Connection = con;
+            cmd.CommandText = "SELECT UserEmail FROM Users WHERE UserEmail = @Email";
+            cmd.Parameters.AddWithValue("@Email", txtEmailReg.Text);
+            SqlDataReader data = cmd.ExecuteReader();
+            if (data.HasRows)
+                existing = true;
+        }
+
+        return existing;
+    }
+
+    public static string GetUserIP()
+    {
+        string VisitorsIPAddr = string.Empty;
+        if (HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"] != null)
+        {
+            VisitorsIPAddr = HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"].ToString();
+        }
+        else if (HttpContext.Current.Request.UserHostAddress.Length != 0)
+        {
+            VisitorsIPAddr = HttpContext.Current.Request.UserHostAddress;
+        }
+        if (VisitorsIPAddr == "::1")
+            VisitorsIPAddr = "127.0.0.1";
+        return VisitorsIPAddr;
+    }
+
+    protected void btnLogin_Click(object sender, EventArgs e)
+    {
+        using (SqlConnection con = new SqlConnection(Helper.GetCon()))
+        using (SqlCommand cmd = new SqlCommand())
+        {
+            try
+            {
+                servererror2.Visible = false;
+
+                con.Open();
+                cmd.Connection = con;
+                cmd.CommandText = "SELECT UserID, UserType FROM Users WHERE UserEmail = @Email AND " +
+                    "UserPassword = @Password";
+                cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
+                cmd.Parameters.AddWithValue("@Password", Helper.CreateSHAHash(txtPassword.Text));
+                using (SqlDataReader data = cmd.ExecuteReader())
+                {
+                    if (data.HasRows)
+                    {
+                        while (data.Read())
+                        {
+                            Session["userid"] = data["UserID"].ToString();
+                            Session["typeid"] = data["UserType"].ToString();
+                        }
+
+                        ReservationModalHides();
+                        GetAccountInfo();
+                    }
+                    else
+                    {
+                        loginerror.Visible = true;
+                    }
+                }
+            }
+            catch
+            {
+                servererror2.Visible = true;
+            }
         }
     }
 }
