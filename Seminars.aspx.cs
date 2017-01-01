@@ -257,6 +257,27 @@ public partial class Seminars : System.Web.UI.Page
 
         return isHuman;
     }
+
+    private bool isExistUpdate()
+    {
+        bool existing = false;
+
+        using (SqlConnection con = new SqlConnection(Helper.GetCon()))
+        using (SqlCommand cmd = new SqlCommand())
+        {
+            con.Open();
+            cmd.Connection = con;
+            cmd.CommandText = "SELECT UserEmail FROM Users WHERE UserEmail = @Email AND UserID != @id";
+            cmd.Parameters.AddWithValue("@Email", txtUpEAdd.Text);
+            cmd.Parameters.AddWithValue("@id", Session["userid"].ToString());
+            SqlDataReader data = cmd.ExecuteReader();
+            if (data.HasRows)
+                existing = true;
+        }
+
+        return existing;
+    }
+
     #endregion
 
     #region Button
@@ -350,6 +371,39 @@ public partial class Seminars : System.Web.UI.Page
 
     protected void lnkProfile_Click(object sender, EventArgs e)
     {
+        upsuccess.Visible = false;
+        uperror.Visible = false;
+        upserverror.Visible = false;
+
+        using (var con = new SqlConnection(Helper.GetCon()))
+        using (var cmd = new SqlCommand())
+        {
+            con.Open();
+            cmd.Connection = con;
+            cmd.CommandText = @"SELECT UserFirstName, UserMidName, UserLastName,
+                UserCompany, UserPosition, UserEmail, UserMobileNo, UserAddress,
+                UserBday FROM Users WHERE UserID = @id";
+            cmd.Parameters.AddWithValue("@id", Session["userid"].ToString());
+            using (var dr = cmd.ExecuteReader())
+            {
+                if (dr.HasRows)
+                {
+                    if (dr.Read())
+                    {
+                        txtUpFN.Text = dr["UserFirstName"].ToString();
+                        txtUpMN.Text = dr["UserMidName"].ToString();
+                        txtUpLN.Text = dr["UserLastName"].ToString();
+                        txtUpComp.Text = dr["UserCompany"].ToString();
+                        txtUpPos.Text = dr["UserPosition"].ToString();
+                        txtUpEAdd.Text = dr["UserEmail"].ToString();
+                        txtUpMNo.Text = dr["UserMobileNo"].ToString();
+                        txtUpAddr.Text = dr["UserAddress"].ToString();
+                        txtUPDb.Text = dr["UserBday"].ToString();
+                    }
+                }
+            }
+        }
+
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "profileModal", "$('#profileModal').modal();", true);
     }
 
@@ -449,13 +503,14 @@ public partial class Seminars : System.Web.UI.Page
                         cmd.Connection = con;
 
                         cmd.CommandText = @"INSERT INTO Users
-                            (UserFirstName, UserLastName, UserMidName, UserCompany, UserPosition, UserEmail,
+                            (UserFirstName, UserLastName, UserMidName, UserBday, UserCompany, UserPosition, UserEmail,
                             UserMobileNo, UserAddress, UserPassword, UserStatus, UserType, DateAdded, UserIP) VALUES
-                            (@fn, @mn, @ln, @comp, @pos, @email, @mobile, @addr, @pass, @status, @type, @dadded, @ip);
+                            (@fn, @mn, @ln, @bday, @comp, @pos, @email, @mobile, @addr, @pass, @status, @type, @dadded, @ip);
                             SELECT TOP 1 UserID FROM Users ORDER BY UserID DESC";
                         cmd.Parameters.AddWithValue("@fn", txtFN.Text);
                         cmd.Parameters.AddWithValue("@mn", txtMN.Text);
                         cmd.Parameters.AddWithValue("@ln", txtLN.Text);
+                        cmd.Parameters.AddWithValue("@bday", txtBday.Text);
                         cmd.Parameters.AddWithValue("@comp", txtCompany.Text);
                         cmd.Parameters.AddWithValue("@pos", txtPosition.Text);
                         cmd.Parameters.AddWithValue("@email", txtEmailReg.Text);
@@ -528,13 +583,14 @@ public partial class Seminars : System.Web.UI.Page
                         cmd.Connection = con;
 
                         cmd.CommandText = @"INSERT INTO Users
-                            (UserFirstName, UserLastName, UserMidName, UserCompany, UserPosition, UserEmail,
+                            (UserFirstName, UserLastName, UserMidName, UserBday, UserCompany, UserPosition, UserEmail,
                             UserMobileNo, UserAddress, UserPassword, UserStatus, UserType, DateAdded, UserIP) VALUES
-                            (@fn, @mn, @ln, @comp, @pos, @email, @mobile, @addr, @pass, @status, @type, @dadded, @ip);
+                            (@fn, @ln, @mn, @bday, @comp, @pos, @email, @mobile, @addr, @pass, @status, @type, @dadded, @ip);
                             SELECT TOP 1 UserID FROM Users ORDER BY UserID DESC";
                         cmd.Parameters.AddWithValue("@fn", txtModalFN.Text);
                         cmd.Parameters.AddWithValue("@mn", txtModalMN.Text);
                         cmd.Parameters.AddWithValue("@ln", txtModalLN.Text);
+                        cmd.Parameters.AddWithValue("@bday", txtModalBday.Text);
                         cmd.Parameters.AddWithValue("@comp", txtModalComp.Text);
                         cmd.Parameters.AddWithValue("@pos", txtModalPos.Text);
                         cmd.Parameters.AddWithValue("@email", txtModalEmailReg.Text);
@@ -584,6 +640,62 @@ public partial class Seminars : System.Web.UI.Page
             captchaerror2.Visible = true;
         }
 
+    }
+
+    protected void btnUpdateInfo_Click(object sender, EventArgs e)
+    {
+        if (!isExistUpdate())
+        {
+            uperror.Visible = false;
+
+            using (SqlConnection con = new SqlConnection(Helper.GetCon()))
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                //try
+                //{
+                //    upserverror.Visible = false;
+
+                    con.Open();
+                    cmd.Connection = con;
+
+                    if (string.IsNullOrEmpty(txtUpPass.Text))
+                    {
+                        cmd.CommandText = @"UPDATE Users SET UserFirstName = @fn, UserMidName = @mn,
+                        UserLastName = @ln, UserBday = @bday, UserCompany = @comp, UserPosition = @pos, UserEmail = @email,
+                        UserMobileNo = @mobno, UserAddress = @addr WHERE UserID = @id";
+                    }
+                    else
+                    {
+                        cmd.CommandText = @"UPDATE Users SET UserFirstName = @fn, UserMidName = @mn,
+                        UserLastName = @ln, UserBday = @bday, UserCompany = @comp, UserPosition = @pos, UserEmail = @email,
+                        UserMobileNo = @mobno, UserAddress = @addr, UserPassword = @pass WHERE UserID = @id";
+                    }
+                    cmd.Parameters.AddWithValue("@id", Session["userid"].ToString());
+                    cmd.Parameters.AddWithValue("fn", txtUpFN.Text);
+                    cmd.Parameters.AddWithValue("@mn", txtUpMN.Text);
+                    cmd.Parameters.AddWithValue("@ln", txtUpLN.Text);
+                    cmd.Parameters.AddWithValue("@bday", txtUPDb.Text);
+                    cmd.Parameters.AddWithValue("@comp", txtUpComp.Text);
+                    cmd.Parameters.AddWithValue("@pos", txtUpPos.Text);
+                    cmd.Parameters.AddWithValue("@email", txtUpEAdd.Text);
+                    cmd.Parameters.AddWithValue("@mobno", txtUpMNo.Text);
+                    cmd.Parameters.AddWithValue("@addr", txtUpAddr.Text);
+                    cmd.Parameters.AddWithValue("@pass", Helper.CreateSHAHash(txtUpPass.Text));
+                    cmd.ExecuteNonQuery();
+
+                    upsuccess.Visible = true;
+                //}
+                //catch
+                //{
+                //    upserverror.Visible = true;
+                //}
+            }
+        }
+
+        else
+        {
+            uperror.Visible = true;
+        }
     }
     #endregion
 

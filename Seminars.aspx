@@ -28,6 +28,11 @@
             font-weight: 400;
         }
 
+        .spnRsvpHeader {
+            font-size: 20px;
+            font-weight: 400;
+        }
+
         .spanRsvpWeight {
             font-weight: 600;
         }
@@ -258,13 +263,13 @@
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <div class="panel panel-default">
-                                                <div class="panel-heading">
+                                                <br />
                                                     <center>
-                                                    <span id="spnRsvpHeader">
-                                                        <asp:Literal ID="ltRsvpHeader" runat="server" />
-                                                    </span>
-                                                </center>
-                                                </div>
+                                                        <span id="spnRsvpHeader">
+                                                            <asp:Literal ID="ltRsvpHeader" runat="server" />
+                                                        </span>
+                                                    </center>
+                                                <hr />
                                                 <div class="panel-body">
                                                     <span class="spanRsvpWeight">Date 
                                                     </span>
@@ -285,9 +290,8 @@
                                                     <span class="spanRsvpWeight">Venue
                                                     </span>
                                                     <asp:Literal ID="ltRsvpVenue" runat="server" />
-                                                </div>
-                                                <div class="panel-footer">
-                                                </div>
+                                                </div> 
+                                                <hr />
                                             </div>
                                         </div>
                                         <div id="pnlAccount" class="col-lg-8" runat="server">
@@ -467,7 +471,7 @@
                                         <div id="pnlReserve" class="col-lg-8" runat="server">
                                             <div class="panel panel-default">
                                                 <div class="panel-body">
-                                                    <h3>WELCOME!</h3>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -686,17 +690,157 @@
             </div>
 
             <div id="profileModal" class="modal fade" role="dialog">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <asp:UpdatePanel runat="server">
                         <ContentTemplate>
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">
-                                        <center>MY PROFILE</center>
-                                    </h4>
-                                </div>
-                                <div class="modal-body">
+                                <div class="row">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">
+                                            <center>MY PROFILE</center>
+                                        </h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="col-lg-12">
+                                            <div class="col-lg-6">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        <center>
+                                                        <h4>Personal Information</h4>
+                                                    </center>
+                                                        <hr />
+                                                        <div id="uperror" runat="server" class="alert alert-danger" visible="false">
+                                                            Email address already exist.
+                                                        </div>
+                                                        <div id="upserverror" runat="server" class="alert alert-warning" visible="false">
+                                                            Server error. Try again later.
+                                                        </div>
+                                                        <div id="upsuccess" runat="server" class="alert alert-success" visible="false">
+                                                            Personal Information Updated.
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <asp:TextBox ID="txtUpFN" runat="server" class="form-control"
+                                                                        Placeholder="First Name" required />
+                                                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator10" runat="server"
+                                                                        ForeColor="red"
+                                                                        Display="Dynamic"
+                                                                        ControlToValidate="txtUpFN"
+                                                                        ValidationExpression="^[a-zA-Z'.\s]{1,50}"
+                                                                        Text="Enter a valid name" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <asp:TextBox ID="txtUpMN" runat="server" class="form-control"
+                                                                        Placeholder="Middle Name" />
+                                                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator11" runat="server"
+                                                                        ForeColor="red"
+                                                                        Display="Dynamic"
+                                                                        ControlToValidate="txtUpMN"
+                                                                        ValidationExpression="^[a-zA-Z'.\s]{1,50}"
+                                                                        Text="Enter a valid name" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <asp:TextBox ID="txtUpLN" runat="server" class="form-control"
+                                                                        Placeholder="Last Name" />
+                                                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator12" runat="server"
+                                                                        ForeColor="red"
+                                                                        Display="Dynamic"
+                                                                        ControlToValidate="txtUpLN"
+                                                                        ValidationExpression="^[a-zA-Z'.\s]{1,50}"
+                                                                        Text="Enter a valid name" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <asp:TextBox ID="txtUPDb" runat="server" class="form-control"
+                                                                        TextMode="Date" title="Date of Birth" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <asp:TextBox ID="txtUpMNo" runat="server" class="form-control"
+                                                                        Placeholder="Mobile Number" TextMode="Number" />
+                                                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator13" runat="server"
+                                                                        ForeColor="Red"
+                                                                        Display="Dynamic"
+                                                                        ControlToValidate="txtUpMNo"
+                                                                        ValidationExpression="^[0-9]{11}$"
+                                                                        ErrorMessage="Enter a valid Mobile Number (11 digits)" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <asp:TextBox ID="txtUpAddr" runat="server" class="form-control"
+                                                                        Placeholder="Address" TextMode="MultiLine"
+                                                                        Style="max-width: 100%;" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <asp:TextBox ID="txtUpComp" runat="server" class="form-control"
+                                                                        Placeholder="Company" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <asp:TextBox ID="txtUpPos" runat="server" class="form-control"
+                                                                        Placeholder="Position" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <asp:TextBox ID="txtUpEAdd" runat="server" class="form-control"
+                                                                        Placeholder="Email Address" TextMode="Email"
+                                                                        title="Enter a valid & working email address for confirmation." />
+                                                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator14" runat="server"
+                                                                        ForeColor="red"
+                                                                        Display="Dynamic"
+                                                                        ControlToValidate="txtUpEAdd"
+                                                                        ErrorMessage="Please enter valid e-mail address"
+                                                                        ValidationExpression="^[\w\.\-]+@[a-zA-Z0-9\-]+(\.[a-zA-Z0-9\-]{1,})*(\.[a-zA-Z]{2,3}){1,2}$" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <asp:TextBox ID="txtUpPass" runat="server" class="form-control"
+                                                                        Placeholder="Password" TextMode="Password" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <asp:TextBox ID="txtUpPass2" runat="server" class="form-control"
+                                                                        Placeholder="Repeat Password" TextMode="Password" />
+                                                                    <asp:CompareValidator ID="CompareValidator2" runat="server"
+                                                                        Display="Dynamic"
+                                                                        ForeColor="Red"
+                                                                        ControlToCompare="txtUpPass"
+                                                                        ControlToValidate="txtUpPass2"
+                                                                        ErrorMessage="Passwords do not match" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <hr />
+                                                            <center>
+                                                            <asp:Button id="btnUpdateInfo" class="btn btn-primary"
+                                                                runat="server" Text="Update" OnClick="btnUpdateInfo_Click" />
+                                                        </center>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                 </div>
