@@ -4,6 +4,84 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <h1>SEMINARS</h1>
+
+    <script type='text/javascript' src='<%= Page.ResolveUrl("~/js/newjs/jquery.min.js") %>'></script>
+    <script type='text/javascript' src='<%= Page.ResolveUrl("~/js/newjs/jquery-ui.min.js") %>'></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            SearchTopic();
+            SearchSpeaker();
+        });
+
+        // if you use jQuery, you can load them when dom is read.
+        $(document).ready(function () {
+            var prm = Sys.WebForms.PageRequestManager.getInstance();
+            prm.add_initializeRequest(InitializeRequest);
+            prm.add_endRequest(EndRequest);
+
+        });
+
+        function InitializeRequest(sender, args) {
+        }
+
+        function EndRequest(sender, args) {
+            // after update occur on UpdatePanel re-init the Autocomplete
+            SearchTopic();
+            SearchSpeaker();
+        }
+
+        function SearchTopic() {
+            $(".autosuggest").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: "Seminars.aspx/GetTopics",
+                        data: JSON.stringify({
+                            prefixText: document.getElementById('<%=txtTopic.ClientID%>').value
+                        }),
+                        dataType: "json",
+                        success: function (data) {
+                            response(data.d);
+                        },
+                        error: function (result) {
+                            //alert("Error");
+                        }
+                    });
+                }
+            });
+        }
+
+        function SearchSpeaker() {
+            $("#<%=txtSpeaker.ClientID %>").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: "Seminars.aspx/GetSpeakers",
+                        data: "{'prefixText':'" + request.term + "'}",
+                        dataType: "json",
+                        success: function (data) {
+                            response($.map(data.d, function (item) {
+                                return {
+                                    label: item.split('/vn/')[0],
+                                    val: item.split('/vn/')[1]
+                                }
+                            }))
+                        },
+                        error: function (result) {
+                            alert("Error");
+                        }
+                    });
+                },
+                select: function (e, i) {
+                    $("#<%=hfSpeaker.ClientID %>").val(i.item.val);
+                },
+                minLength: 1
+            });
+            };
+    </script>
     <style type="text/css">
         .spnSched {
             font-size: 20px;
@@ -124,12 +202,13 @@
                     <div class="col-lg-12">
                         <hr />
                         <div class="col-lg-5">
-                            <asp:DropDownList ID="ddlTopic" class="form-control" runat="server"
-                                AutoPostBack="true" OnSelectedIndexChanged="ddlTopic_SelectedIndexChanged" />
+                            <asp:TextBox ID="txtTopic" class="form-control autosuggest" runat="server"
+                                AutoPostBack="true" OnTextChanged="txtTopic_TextChanged" Placeholder="Filter Thematic Area" />
                         </div>
                         <div class="col-lg-5">
-                            <asp:DropDownList ID="ddlSpeaker" class="form-control" runat="server"
-                                AutoPostBack="true" OnSelectedIndexChanged="ddlSpeaker_SelectedIndexChanged" />
+                            <asp:TextBox ID="txtSpeaker" class="form-control" runat="server"
+                                AutoPostBack="true" OnTextChanged="txtSpeaker_TextChanged" Placeholder="Filter Seminar Speaker" />
+                            <asp:HiddenField ID="hfSpeaker" Value="0" runat="server" />
                         </div>
                         <div class="col-lg-2">
                             <asp:DropDownList ID="ddlDay" class="form-control" runat="server"

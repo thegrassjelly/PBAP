@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -14,8 +16,6 @@ public partial class Seminars : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            GetSpeakers();
-            GetTopics();
             GetSeminars();
             GetCurrentWeek();
             GetAccountInfo();
@@ -23,6 +23,61 @@ public partial class Seminars : System.Web.UI.Page
     }
 
     #region Method
+    [WebMethod]
+    public static List<string> GetTopics(string prefixText)
+    {
+        List<string> result = new List<string>();
+
+        using (SqlConnection con = new SqlConnection(Helper.GetCon()))
+        using (SqlCommand cmd = new SqlCommand())
+        {
+            con.Open();
+            cmd.Connection = con;
+            cmd.CommandText = @"SELECT SeminarArea FROM Seminars WHERE SeminarArea LIKE
+                @keyword ORDER BY SeminarArea ASC";
+            cmd.Parameters.AddWithValue("@keyword", "%" + prefixText + "%");
+            using (SqlDataReader dr = cmd.ExecuteReader())
+            {
+                while (dr.Read())
+                {
+                    result.Add(dr["SeminarArea"].ToString());
+                }
+            }
+
+        }
+
+        return result;
+    }
+
+    [WebMethod]
+    public static List<string> GetSpeakers(string prefixText)
+    {
+        List<string> result = new List<string>();
+
+        using (SqlConnection con = new SqlConnection(Helper.GetCon()))
+        using (SqlCommand cmd = new SqlCommand())
+        {
+            con.Open();
+            cmd.Connection = con;
+            cmd.CommandText = @"SELECT SeminarSpeakerTitle, SeminarSpeakerFN, SeminarSpeakerLN, SeminarSpeakerID FROM SeminarSpeakers
+                        WHERE (SeminarSpeakerLN LIKE @SearchText OR SeminarSpeakerFN LIKE @SearchText) 
+                        ORDER BY SeminarSpeakerLN ASC";
+            cmd.Parameters.AddWithValue("@SearchText", '%' + prefixText + '%');
+            using (SqlDataReader dr = cmd.ExecuteReader())
+            {
+                while (dr.Read())
+                {
+                    string myString = dr["SeminarSpeakerTitle"] + " " + dr["SeminarSpeakerLN"].ToString() + ", " + dr["SeminarSpeakerFN"].ToString()
+                        + "/vn/" + dr["SeminarSpeakerID"].ToString();
+                    result.Add(myString);
+                }
+            }
+
+        }
+
+        return result;
+    }
+
     private void GetAccountInfo()
     {
         if (Session["userid"] != null)
@@ -56,43 +111,6 @@ public partial class Seminars : System.Web.UI.Page
         }
     }
 
-    private void GetTopics()
-    {
-        using (SqlConnection con = new SqlConnection(Helper.GetCon()))
-        using (SqlCommand cmd = new SqlCommand())
-        {
-            con.Open();
-            cmd.Connection = con;
-            cmd.CommandText = @"SELECT DISTINCT SeminarArea FROM Seminars";
-            SqlDataReader dr = cmd.ExecuteReader();
-            ddlTopic.DataSource = dr;
-            ddlTopic.DataTextField = "SeminarArea";
-            ddlTopic.DataValueField = "SeminarArea";
-            ddlTopic.DataBind();
-
-            ddlTopic.Items.Insert(0, "All Thematic Area");
-        }
-    }
-
-    private void GetSpeakers()
-    {
-        using (SqlConnection con = new SqlConnection(Helper.GetCon()))
-        using (SqlCommand cmd = new SqlCommand())
-        {
-            con.Open();
-            cmd.Connection = con;
-            cmd.CommandText = @"SELECT DISTINCT SeminarSpeakerID,
-                (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker FROM SeminarSpeakers";
-            SqlDataReader dr = cmd.ExecuteReader();
-            ddlSpeaker.DataSource = dr;
-            ddlSpeaker.DataTextField = "Speaker";
-            ddlSpeaker.DataValueField = "SeminarSpeakerID";
-            ddlSpeaker.DataBind();
-
-            ddlSpeaker.Items.Insert(0, "All Speakers");
-        }
-    }
-
     private void GetCurrentWeek()
     {
         var monday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Monday);
@@ -112,15 +130,80 @@ public partial class Seminars : System.Web.UI.Page
         {
             con.Open();
             cmd.Connection = con;
-            cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
-                SeminarLocation, SeminarDate, 
-                (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
-                FROM Seminars
-                INNER JOIN SeminarSpeakers ON Seminars.SeminarSpeaker = SeminarSpeakers.SeminarSpeakerID 
-                ORDER BY SeminarDate ASC";
+
+            if (!string.IsNullOrEmpty(txtTopic.Text) && string.IsNullOrEmpty(txtSpeaker.Text))
+            {
+                if (ddlDay.SelectedValue == "All Days")
+                {
+                    cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
+                    SeminarLocation, SeminarDate, 
+                    (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
+                    FROM Seminars
+                    INNER JOIN SeminarSpeakers ON Seminars.SeminarSpeaker = SeminarSpeakers.SeminarSpeakerID
+                    WHERE SeminarArea = @topic
+                    ORDER BY SeminarDate ASC";
+                }
+                else
+                {
+
+                }
+
+            }
+            else if (string.IsNullOrEmpty(txtTopic.Text) && !string.IsNullOrEmpty(txtSpeaker.Text))
+            {
+                if (ddlDay.SelectedValue == "All Days")
+                {
+                        cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
+                    SeminarLocation, SeminarDate, 
+                    (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
+                    FROM Seminars
+                    INNER JOIN SeminarSpeakers ON Seminars.SeminarSpeaker = SeminarSpeakers.SeminarSpeakerID
+                    WHERE SeminarSpeaker = @speaker
+                    ORDER BY SeminarDate ASC";
+                }
+                else
+                {
+
+                }
+            }
+            else if (!string.IsNullOrEmpty(txtTopic.Text) && !string.IsNullOrEmpty(txtSpeaker.Text))
+            {
+                if (ddlDay.SelectedValue == "All Days")
+                {
+                        cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
+                    SeminarLocation, SeminarDate, 
+                    (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
+                    FROM Seminars
+                    INNER JOIN SeminarSpeakers ON Seminars.SeminarSpeaker = SeminarSpeakers.SeminarSpeakerID
+                    WHERE SeminarSpeaker = @speaker AND
+                          SeminarArea = @topic
+                    ORDER BY SeminarDate ASC";
+                }
+                else
+                {
+
+                }
+            }
+            else
+            {
+                if (ddlDay.SelectedValue == "All Days")
+                {
+                        cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
+                    SeminarLocation, SeminarDate, 
+                    (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
+                    FROM Seminars
+                    INNER JOIN SeminarSpeakers ON Seminars.SeminarSpeaker = SeminarSpeakers.SeminarSpeakerID
+                    ORDER BY SeminarDate ASC";
+                }
+                else
+                {
+
+                }
+            }
+        
             cmd.Parameters.AddWithValue("@day", ddlDay.SelectedValue);
-            cmd.Parameters.AddWithValue("@topic", ddlTopic.SelectedValue);
-            cmd.Parameters.AddWithValue("@speaker", ddlSpeaker.SelectedValue);
+            cmd.Parameters.AddWithValue("@topic", txtTopic.Text);
+            cmd.Parameters.AddWithValue("@speaker", hfSpeaker.Value);
             cmd.Parameters.AddWithValue("@dateone", monday);
             cmd.Parameters.AddWithValue("@datetwo", friday);
             SqlDataAdapter da = new SqlDataAdapter(cmd);
@@ -700,16 +783,6 @@ public partial class Seminars : System.Web.UI.Page
     #endregion
 
     #region Events
-    protected void ddlTopic_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        GetSeminars();
-    }
-
-    protected void ddlSpeaker_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        GetSeminars();
-    }
-
     protected void ddlDay_SelectedIndexChanged(object sender, EventArgs e)
     {
         GetSeminars();
@@ -728,6 +801,16 @@ public partial class Seminars : System.Web.UI.Page
     protected void lvSeminars_PagePropertiesChanging(object sender, PagePropertiesChangingEventArgs e)
     {
 
+    }
+
+    protected void txtTopic_TextChanged(object sender, EventArgs e)
+    {
+        GetSeminars();
+    }
+
+    protected void txtSpeaker_TextChanged(object sender, EventArgs e)
+    {
+        GetSeminars();
     }
     #endregion
 }
