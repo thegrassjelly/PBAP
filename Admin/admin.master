@@ -7,13 +7,13 @@
     <title>PBAP | Admin</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
-    <link rel="stylesheet" href="css/fullcalendar.css" />
-    <link rel="stylesheet" href="css/matrix-style.css" />
-    <link rel="stylesheet" href="css/matrix-media.css" />
-    <link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
-    <link rel="stylesheet" href="css/jquery.gritter.css" />
+    <link rel="stylesheet" href="<%= Page.ResolveUrl("~/Admin/css/bootstrap.min.css") %>" />
+    <link rel="stylesheet" href="<%= Page.ResolveUrl("~/Admin/css/bootstrap-responsive.min.css") %>" />
+    <link rel="stylesheet" href="<%= Page.ResolveUrl("~/Admin/css/fullcalendar.css") %>"  />
+    <link rel="stylesheet" href="<%= Page.ResolveUrl("~/Admin/css/matrix-style.css") %>" />
+    <link rel="stylesheet" href="<%= Page.ResolveUrl("~/Admin/css/matrix-media.css") %>" />
+    <link href="<%= Page.ResolveUrl("~/Admin/font-awesome/css/font-awesome.css") %>" rel="stylesheet" />
+    <link rel="stylesheet" href="<%= Page.ResolveUrl("~/Admin/css/jquery.gritter.css") %>" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
 </head>
 
@@ -37,7 +37,7 @@
                     <li><a href="login.html"><i class="icon-key"></i> Log Out</a></li>
                 </ul>
             </li>
-            <li class="dropdown" id="menu-messages"><a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle"><i class="icon icon-envelope"></i><span class="text"> Messages</span> <span class="label label-important">5</span> <b class="caret"></b></a>
+            <li class="dropdown" id="menu-messages"><a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle"><i class="icon icon-envelope"></i><span class="text"> Messages</span><b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li><a class="sAdd" title="" href="#"><i class="icon-plus"></i> new message</a></li>
                     <li class="divider"></li>
@@ -65,11 +65,11 @@
     <div id="sidebar">
         <a href="#" class="visible-phone"><i class="icon icon-home"></i>Dashboard</a>
         <ul>
-            <li class="active"><a href="Default.aspx"><i class="icon icon-home"></i><span>Dashboard</span></a> </li>
+            <li class="active"><a href="<%= Page.ResolveUrl("~/Admin/Default.aspx") %>"><i class="icon icon-home"></i><span>Dashboard</span></a> </li>
             <li class="submenu"><a href="#"><i class="icon icon-th-list"></i><span>Seminars</span></a>
                 <ul>
-                    <li><a href="form-validation.html"><i class="fa fa-plus"></i> Add Seminars</a></li>
-                    <li><a href="form-common.html"><i class="fa fa-list"></i> View Seminars</a></li>
+                    <li><a href="<%= Page.ResolveUrl("~/Admin/Seminars/AddSeminars.aspx") %>"><i class="icon icon-plus"></i> Add Seminars</a></li>
+                    <li><a href="<%= Page.ResolveUrl("~/Admin/Seminars/ViewSeminars.aspx") %>"><i class="icon icon-list"></i> View Seminars</a></li>
                 </ul>
             </li>
         </ul>
@@ -94,27 +94,27 @@
     </div>
     <!--end-Footer-part-->
 
-    <script src="js/excanvas.min.js"></script>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/jquery.ui.custom.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.flot.min.js"></script>
-    <script src="js/jquery.flot.resize.min.js"></script>
-    <script src="js/jquery.peity.min.js"></script>
-    <script src="js/fullcalendar.min.js"></script>
-    <script src="js/matrix.js"></script>
-    <script src="js/matrix.dashboard.js"></script>
-    <script src="js/jquery.gritter.min.js"></script>
-    <script src="js/matrix.interface.js"></script>
-    <script src="js/matrix.chat.js"></script>
-    <script src="js/jquery.validate.js"></script>
-    <script src="js/matrix.form_validation.js"></script>
-    <script src="js/jquery.wizard.js"></script>
-    <script src="js/jquery.uniform.js"></script>
-    <script src="js/select2.min.js"></script>
-    <script src="js/matrix.popover.js"></script>
-    <script src="js/jquery.dataTables.min.js"></script>
-    <script src="js/matrix.tables.js"></script>
+    <script src="<%= Page.ResolveUrl("~/Admin/js/excanvas.min.js") %>"></script>
+    <script src="<%= Page.ResolveUrl("~/Admin/js/jquery.min.js") %>"></script>
+    <script src="<%= Page.ResolveUrl("~/Admin/js/jquery.ui.custom.js") %>"></script>
+    <script src="<%= Page.ResolveUrl("~/Admin/js/bootstrap.min.js") %>"></script>
+    <script src="<%= Page.ResolveUrl("~/Admin/js/jquery.flot.min.js") %>"></script>
+    <script src="<%= Page.ResolveUrl("~/Admin/js/jquery.flot.resize.min.js") %>"></script>
+    <script src="<%= Page.ResolveUrl("~/Admin/js/jquery.peity.min.js") %>"></script>
+    <script src="<%= Page.ResolveUrl("~/Admin/js/fullcalendar.min.js") %>"></script>
+    <script src="<%= Page.ResolveUrl("~/Admin/js/matrix.js") %>"></script>
+    <script src="<%= Page.ResolveUrl("~/Admin/js/matrix.dashboard.js") %>"></script>
+    <script src="<%= Page.ResolveUrl("~/Admin/js/jquery.gritter.min.js") %>"></script>
+    <script src="<%= Page.ResolveUrl("~/Admin/js/matrix.interface.js") %>"></script>
+    <script src="<%= Page.ResolveUrl("~/Admin/js/matrix.chat.js") %>"></script>
+    <script src="<%= Page.ResolveUrl("~/Admin/js/jquery.validate.js") %>"></script>
+    <script src="<%= Page.ResolveUrl("~/Admin/js/matrix.form_validation.js") %>"></script>
+    <script src="<%= Page.ResolveUrl("~/Admin/js/jquery.wizard.js") %>"></script>
+    <script src="<%= Page.ResolveUrl("~/Admin/js/jquery.uniform.js") %>"></script>
+    <script src="<%= Page.ResolveUrl("~/Admin/js/select2.min.js") %>"></script>
+    <script src="<%= Page.ResolveUrl("~/Admin/js/matrix.popover.js") %>"></script>
+    <script src="<%= Page.ResolveUrl("~/Admin/js/jquery.dataTables.min.js") %>"></script>
+    <script src="<%= Page.ResolveUrl("~/Admin/js/matrix.tables.js") %>"></script>
 
     <script type="text/javascript">
         // This function is called from the pop-up menus to transfer to

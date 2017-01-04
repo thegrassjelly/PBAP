@@ -17,7 +17,7 @@ public partial class Seminars : System.Web.UI.Page
         if (!IsPostBack)
         {
             GetSeminars();
-            GetCurrentWeek();
+            GetCurrentMonth();
             GetAccountInfo();
         }
     }
@@ -111,19 +111,21 @@ public partial class Seminars : System.Web.UI.Page
         }
     }
 
-    private void GetCurrentWeek()
+    private void GetCurrentMonth()
     {
-        var monday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Monday);
-        var friday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Friday);
+        DateTime now = DateTime.Now;
+        var startDate = new DateTime(now.Year, now.Month, 1);
+        var endDate = startDate.AddMonths(1).AddDays(-1);
 
-        ltMonth.Text = monday.ToString("M", CultureInfo.InvariantCulture);
-        ltMonth2.Text = friday.ToString("M", CultureInfo.InvariantCulture);
+        ltMonth.Text = startDate.ToString("M", CultureInfo.InvariantCulture);
+        ltMonth2.Text = endDate.ToString("M", CultureInfo.InvariantCulture);
     }
 
     private void GetSeminars()
     {
-        var monday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Monday);
-        var friday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Friday);
+        DateTime now = DateTime.Now;
+        var startDate = new DateTime(now.Year, now.Month, 1);
+        var endDate = startDate.AddMonths(1).AddDays(-1);
 
         using (SqlConnection con = new SqlConnection(Helper.GetCon()))
         using (SqlCommand cmd = new SqlCommand())
@@ -229,8 +231,8 @@ public partial class Seminars : System.Web.UI.Page
             cmd.Parameters.AddWithValue("@day", ddlDay.SelectedValue);
             cmd.Parameters.AddWithValue("@topic", txtTopic.Text);
             cmd.Parameters.AddWithValue("@speaker", hfSpeaker.Value);
-            cmd.Parameters.AddWithValue("@dateone", monday);
-            cmd.Parameters.AddWithValue("@datetwo", friday);
+            cmd.Parameters.AddWithValue("@dateone", startDate);
+            cmd.Parameters.AddWithValue("@datetwo", endDate);
             SqlDataAdapter da = new SqlDataAdapter(cmd);
             DataSet ds = new DataSet();
             da.Fill(ds, "Seminars");
