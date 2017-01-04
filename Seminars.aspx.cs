@@ -145,7 +145,13 @@ public partial class Seminars : System.Web.UI.Page
                 }
                 else
                 {
-
+                    cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
+                    SeminarLocation, SeminarDate, 
+                    (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
+                    FROM Seminars
+                    INNER JOIN SeminarSpeakers ON Seminars.SeminarSpeaker = SeminarSpeakers.SeminarSpeakerID
+                    WHERE SeminarArea = @topic AND DATENAME(WEEKDAY, SeminarDate) = @day
+                    ORDER BY SeminarDate ASC";
                 }
 
             }
@@ -153,7 +159,7 @@ public partial class Seminars : System.Web.UI.Page
             {
                 if (ddlDay.SelectedValue == "All Days")
                 {
-                        cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
+                    cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
                     SeminarLocation, SeminarDate, 
                     (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
                     FROM Seminars
@@ -163,7 +169,13 @@ public partial class Seminars : System.Web.UI.Page
                 }
                 else
                 {
-
+                    cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
+                    SeminarLocation, SeminarDate, 
+                    (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
+                    FROM Seminars
+                    INNER JOIN SeminarSpeakers ON Seminars.SeminarSpeaker = SeminarSpeakers.SeminarSpeakerID
+                    WHERE SeminarSpeaker = @speaker AND DATENAME(WEEKDAY, SeminarDate) = @day
+                    ORDER BY SeminarDate ASC";
                 }
             }
             else if (!string.IsNullOrEmpty(txtTopic.Text) && !string.IsNullOrEmpty(txtSpeaker.Text))
@@ -181,7 +193,14 @@ public partial class Seminars : System.Web.UI.Page
                 }
                 else
                 {
-
+                    cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
+                    SeminarLocation, SeminarDate, 
+                    (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
+                    FROM Seminars
+                    INNER JOIN SeminarSpeakers ON Seminars.SeminarSpeaker = SeminarSpeakers.SeminarSpeakerID
+                    WHERE SeminarSpeaker = @speaker AND
+                          SeminarArea = @topic AND DATENAME(WEEKDAY, SeminarDate) = @day
+                    ORDER BY SeminarDate ASC";
                 }
             }
             else
@@ -197,7 +216,13 @@ public partial class Seminars : System.Web.UI.Page
                 }
                 else
                 {
-
+                    cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
+                    SeminarLocation, SeminarDate, 
+                    (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
+                    FROM Seminars
+                    INNER JOIN SeminarSpeakers ON Seminars.SeminarSpeaker = SeminarSpeakers.SeminarSpeakerID
+                    WHERE DATENAME(WEEKDAY, SeminarDate) = @day
+                    ORDER BY SeminarDate ASC";
                 }
             }
         
