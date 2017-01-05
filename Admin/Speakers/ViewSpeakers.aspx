@@ -1,9 +1,9 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Admin/admin.master" AutoEventWireup="true" CodeFile="ViewSeminars.aspx.cs" Inherits="Admin_Seminars_ViewSeminars" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Admin/admin.master" AutoEventWireup="true" CodeFile="ViewSpeakers.aspx.cs" Inherits="Admin_Speakers_ViewSpeakers" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-    <i class="fa fa-list"></i> Seminars List
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+<i class="fa fa-edit"></i> Update Speaker Information
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="body" runat="Server">
+<asp:Content ID="Content3" ContentPlaceHolderID="body" runat="Server">
     <form class="form-horizontal" runat="server">
         <asp:ScriptManager runat="server" />
         <div class="col-lg-12">
@@ -38,39 +38,33 @@
                             <table class="table table-striped table-hover">
                                 <thead>
                                     <th>#</th>
-                                    <th>Code</th>
                                     <th>Title</th>
-                                    <th>Competency</th>
-                                    <th>Units</th>
-                                    <th>Speaker</th>
-                                    <th>Fee</th>
-                                    <th>Date</th>
-                                    <th>Location</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Contact No.</th>
+                                    <th>Email Address</th>
                                     <th>Status</th>
                                     <th>Date Added</th>
                                     <th>Date Modified</th>
                                     <th></th>
                                 </thead>
                                 <tbody>
-                                    <asp:ListView ID="lvSeminars" runat="server"
-                                        OnPagePropertiesChanging="lvSeminars_PagePropertiesChanging"
-                                        OnDataBound="lvSeminars_DataBound">
+                                    <asp:ListView ID="lvSpeakers" runat="server"
+                                        OnPagePropertiesChanging="lvSpeakers_PagePropertiesChanging"
+                                        OnDataBound="lvSpeakers_DataBound">
                                         <ItemTemplate>
                                             <tr>
-                                                <td><%# Eval("SeminarID") %></td>
-                                                <td><%# Eval("SeminarCode") %></td>
-                                                <td><%# Eval("SeminarTitle") %></td>
-                                                <td><%# Eval("SeminarArea") %></td>
-                                                <td><%# Eval("SeminarUnits") %></td>
-                                                <td><%# Eval("Speaker") %></td>
-                                                <td><%# Eval("SeminarFee", "{0: ₱ #,###.00}") %></td>
-                                                <td><%# Eval("SeminarDate") %></td>
-                                                <td><%# Eval("SeminarLocation") %></td>
-                                                <td><span class="label label-success"><%# Eval("SeminarStatus") %></span</td>
+                                                <td><%# Eval("SeminarSpeakerID") %></td>
+                                                <td><%# Eval("SeminarSpeakerTitle") %></td>
+                                                <td><%# Eval("SeminarSpeakerFN") %></td>
+                                                <td><%# Eval("SeminarSpeakerLN") %></td>
+                                                <td><%# Eval("SeminarSpeakerTel") %></td>
+                                                <td><%# Eval("SeminarSpeakerEmail") %></td>
+                                                <td><span class="label label-success"><%# Eval("SeminarSpeakerStatus") %></span</td>
                                                 <td><%# Eval("DateAdded", "{0: MMMM dd, yyyy}") %></td>
                                                 <td><%# Eval("DateModified", "{0: MMMM dd, yyyy}") %></td>
                                                 <td>
-                                                    <a href='UpdateSeminars.aspx?ID=<%# Eval("SeminarID") %>'>
+                                                    <a href='UpdateSpeakers.aspx?ID=<%# Eval("SeminarSpeakerID") %>'>
                                                         <asp:Label runat="server" ToolTip="Show Info"><i class="fa fa-search"></i></asp:Label></a>
                                                 </td>
                                             </tr>
@@ -90,7 +84,7 @@
                 </div>
                 <div class="panel-footer">
                                     <center>
-                                        <asp:DataPager id="dpSeminars" runat="server" pageSize="10" PagedControlID="lvSeminars" QueryStringField="PageNumber">
+                                        <asp:DataPager id="dpSpeakers" runat="server" pageSize="10" PagedControlID="lvSpeakers" QueryStringField="PageNumber">
                                             <Fields>
                                                 <asp:NumericPagerField Buttontype="Button"
                                                     NumericButtonCssClass="btn btn-default"

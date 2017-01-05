@@ -40,8 +40,8 @@ public partial class Admin_Seminars_AddSeminars : System.Web.UI.Page
             cmd.Connection = con;
             cmd.CommandText = @"INSERT INTO Seminars
                 (SeminarCode, SeminarTitle, SeminarArea, SeminarUnits, SeminarDescription, SeminarFee, SeminarLocation,
-                SeminarDate, SeminarSpeaker, SeminarStatus) VALUES
-                (@code, @title, @area, @units, @desc, @fee, @loc, @date, @speaker, @status)";
+                SeminarDate, SeminarSpeaker, SeminarStatus, DateAdded, DateModified) VALUES
+                (@code, @title, @area, @units, @desc, @fee, @loc, @date, @speaker, @status, @dadd, @dmod)";
             cmd.Parameters.AddWithValue("@code", txtCode.Text);
             cmd.Parameters.AddWithValue("@title", txtTitle.Text);
             cmd.Parameters.AddWithValue("@area", txtCompetency.Text);
@@ -53,6 +53,8 @@ public partial class Admin_Seminars_AddSeminars : System.Web.UI.Page
             cmd.Parameters.AddWithValue("@speaker", ddlSpeaker.SelectedValue);
             cmd.Parameters.AddWithValue("@status", ddlStatus.SelectedValue);
             cmd.Parameters.AddWithValue("@price", txtPrice.Text);
+            cmd.Parameters.AddWithValue("@dadd", DateTime.Now);
+            cmd.Parameters.AddWithValue("@dmod", DateTime.Now);
             cmd.ExecuteNonQuery();
 
             Response.Redirect("ViewSeminars.aspx");

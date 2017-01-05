@@ -1,9 +1,9 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Admin/admin.master" AutoEventWireup="true" CodeFile="ViewSeminars.aspx.cs" Inherits="Admin_Seminars_ViewSeminars" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Admin/admin.master" AutoEventWireup="true" CodeFile="ViewUsers.aspx.cs" Inherits="Admin_Users_ViewUsers" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-    <i class="fa fa-list"></i> Seminars List
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+    <i class="fa fa-list"></i> Users List
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="body" runat="Server">
+<asp:Content ID="Content2" ContentPlaceHolderID="body" Runat="Server">
     <form class="form-horizontal" runat="server">
         <asp:ScriptManager runat="server" />
         <div class="col-lg-12">
@@ -19,7 +19,16 @@
                                 </asp:DropDownList>
                             </div>
                         </div>
-                        <div class="col-lg-11">
+                        <div class="col-lg-1">
+                            <div class="input-group">
+                                <asp:DropDownList ID="ddlType" runat="server" class="form-control"
+                                    AutoPostBack="True" OnSelectedIndexChanged="ddlType_SelectedIndexChanged">
+                                    <asp:ListItem Text="User" Value="User" />
+                                    <asp:ListItem Text="Admin" Value="Admin" />
+                                </asp:DropDownList>
+                            </div>
+                        </div>
+                        <div class="col-lg-10">
                             <div class="input-group">
                                 <asp:TextBox ID="txtSearch" runat="server" class="form-control autosuggest"
                                     placeholder="Keyword..." OnTextChanged="txtSearch_TextChanged" AutoPostBack="true" />
@@ -38,39 +47,35 @@
                             <table class="table table-striped table-hover">
                                 <thead>
                                     <th>#</th>
-                                    <th>Code</th>
-                                    <th>Title</th>
-                                    <th>Competency</th>
-                                    <th>Units</th>
-                                    <th>Speaker</th>
-                                    <th>Fee</th>
-                                    <th>Date</th>
-                                    <th>Location</th>
+                                    <th>Name</th>
+                                    <th>Company</th>
+                                    <th>Position</th>
+                                    <th>Email Address</th>
+                                    <th>Mobile No.</th>
                                     <th>Status</th>
+                                    <th>User Type</th>
                                     <th>Date Added</th>
                                     <th>Date Modified</th>
                                     <th></th>
                                 </thead>
                                 <tbody>
-                                    <asp:ListView ID="lvSeminars" runat="server"
-                                        OnPagePropertiesChanging="lvSeminars_PagePropertiesChanging"
-                                        OnDataBound="lvSeminars_DataBound">
+                                    <asp:ListView ID="lvUsers" runat="server"
+                                        OnPagePropertiesChanging="lvUsers_PagePropertiesChanging"
+                                        OnDataBound="lvUsers_DataBound">
                                         <ItemTemplate>
                                             <tr>
-                                                <td><%# Eval("SeminarID") %></td>
-                                                <td><%# Eval("SeminarCode") %></td>
-                                                <td><%# Eval("SeminarTitle") %></td>
-                                                <td><%# Eval("SeminarArea") %></td>
-                                                <td><%# Eval("SeminarUnits") %></td>
-                                                <td><%# Eval("Speaker") %></td>
-                                                <td><%# Eval("SeminarFee", "{0: ₱ #,###.00}") %></td>
-                                                <td><%# Eval("SeminarDate") %></td>
-                                                <td><%# Eval("SeminarLocation") %></td>
-                                                <td><span class="label label-success"><%# Eval("SeminarStatus") %></span</td>
+                                                <td><%# Eval("UserID") %></td>
+                                                <td><%# Eval("UserName") %></td>
+                                                <td><%# Eval("UserCompany") %></td>
+                                                <td><%# Eval("UserPosition") %></td>
+                                                <td><%# Eval("UserEmail") %></td>
+                                                <td><%# Eval("UserMobileNo") %></td>
+                                                <td><span class="label label-success"><%# Eval("UserStatus") %></span</td>
+                                                <td><span class="label label-primary"><%# Eval("UserType") %></span</td>
                                                 <td><%# Eval("DateAdded", "{0: MMMM dd, yyyy}") %></td>
                                                 <td><%# Eval("DateModified", "{0: MMMM dd, yyyy}") %></td>
                                                 <td>
-                                                    <a href='UpdateSeminars.aspx?ID=<%# Eval("SeminarID") %>'>
+                                                    <a href='UpdateUsers.aspx?ID=<%# Eval("UserID") %>'>
                                                         <asp:Label runat="server" ToolTip="Show Info"><i class="fa fa-search"></i></asp:Label></a>
                                                 </td>
                                             </tr>
@@ -90,7 +95,7 @@
                 </div>
                 <div class="panel-footer">
                                     <center>
-                                        <asp:DataPager id="dpSeminars" runat="server" pageSize="10" PagedControlID="lvSeminars" QueryStringField="PageNumber">
+                                        <asp:DataPager id="dpUsers" runat="server" pageSize="10" PagedControlID="lvUsers" QueryStringField="PageNumber">
                                             <Fields>
                                                 <asp:NumericPagerField Buttontype="Button"
                                                     NumericButtonCssClass="btn btn-default"

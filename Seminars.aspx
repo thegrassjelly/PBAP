@@ -248,7 +248,7 @@
                                 <tr>
                                     <th>SCHEDULE</th>
                                     <th>TOPIC TITLES</th>
-                                    <th>THEMATIC AREA</th>
+                                    <th>COMPETENCY</th>
                                     <th>CREDIT UNITS</th>
                                     <th>VENUE</th>
                                     <th>SPEAKER</th>
@@ -354,7 +354,7 @@
                                                     </span>
                                                     <asp:Literal ID="ltRsvpDate" runat="server" />
                                                     <br />
-                                                    <span class="spanRsvpWeight">Thematic Area 
+                                                    <span class="spanRsvpWeight">Competency
                                                     </span>
                                                     <asp:Literal ID="ltRsvpArea" runat="server" />
                                                     <br />
@@ -369,6 +369,10 @@
                                                     <span class="spanRsvpWeight">Venue
                                                     </span>
                                                     <asp:Literal ID="ltRsvpVenue" runat="server" />
+                                                    <br />
+                                                    <span class="spanRsvpWeight">Price
+                                                    </span>
+                                                    ₱ <asp:Literal ID="ltPrice" runat="server" />
                                                 </div>
                                                 <hr />
                                             </div>
@@ -557,6 +561,84 @@
                                         <div id="pnlReserve" class="col-lg-8" runat="server">
                                             <div class="panel panel-default">
                                                 <div class="panel-body">
+                                                    <ul class="nav nav-tabs">
+                                                        <li class="active"><a href="#tab_a" data-toggle="tab"><b>Step 1 - Verify Information</b></a></li>
+                                                        <li><a href="#tab_b" data-toggle="tab"><b>Step 2 - Payment Method</b></a></li>
+                                                        <li><a href="#tab_c" data-toggle="tab"><b>Step 3 - Confirm Reservation</b></a></li>
+                                                    </ul>
+                                                    <div class="tab-content">
+                                                        <div class="tab-pane active" id="tab_a">
+                                                            <br />
+                                                            <center><p>
+                                                            <asp:LinkButton ID="lnkUpdate2" runat="server" OnClick="lnkUpdate2_Click">Update Account Information</asp:LinkButton>
+                                                            </p></center>
+                                                            <hr />
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <div class="col-lg-12">
+                                                                        <asp:TextBox ID="txtFN2" runat="server" class="form-control"
+                                                                            Placeholder="First Name" disabled />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="col-lg-12">
+                                                                        <asp:TextBox ID="txtMN2" runat="server" class="form-control"
+                                                                            Placeholder="Middle Name" disabled />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="col-lg-12">
+                                                                        <asp:TextBox ID="txtLN2" runat="server" class="form-control"
+                                                                            Placeholder="Last Name" disabled />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="col-lg-12">
+                                                                        <asp:TextBox ID="txtBday2" runat="server" class="form-control"
+                                                                            TextMode="Date" title="Date of Birth" disabled />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="col-lg-12">
+                                                                        <asp:TextBox ID="txtMNo2" runat="server" class="form-control"
+                                                                            Placeholder="Mobile Number" TextMode="Number" disabled />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="col-lg-12">
+                                                                        <asp:TextBox ID="txtAddr2" runat="server" class="form-control"
+                                                                            Placeholder="Address" TextMode="MultiLine"
+                                                                            Style="max-width: 100%;" disabled />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <div class="col-lg-12">
+                                                                        <asp:TextBox ID="txtComp2" runat="server" class="form-control"
+                                                                            Placeholder="Company" disabled />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="col-lg-12">
+                                                                        <asp:TextBox ID="txtPos2" runat="server" class="form-control"
+                                                                            Placeholder="Position" disabled />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="col-lg-12">
+                                                                        <asp:TextBox ID="txtEadd2" runat="server" class="form-control"
+                                                                            Placeholder="Email Address" TextMode="Email"
+                                                                            disabled />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="tab-pane" id="tab_b">
+                                                        </div>
+                                                        <div class="tab-pane" id="tab_c">
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

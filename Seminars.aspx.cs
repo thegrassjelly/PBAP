@@ -184,7 +184,7 @@ public partial class Seminars : System.Web.UI.Page
             {
                 if (ddlDay.SelectedValue == "All Days")
                 {
-                        cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
+                    cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
                     SeminarLocation, SeminarDate, 
                     (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
                     FROM Seminars
@@ -209,7 +209,7 @@ public partial class Seminars : System.Web.UI.Page
             {
                 if (ddlDay.SelectedValue == "All Days")
                 {
-                        cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
+                    cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
                     SeminarLocation, SeminarDate, 
                     (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
                     FROM Seminars
@@ -227,7 +227,7 @@ public partial class Seminars : System.Web.UI.Page
                     ORDER BY SeminarDate ASC";
                 }
             }
-        
+
             cmd.Parameters.AddWithValue("@day", ddlDay.SelectedValue);
             cmd.Parameters.AddWithValue("@topic", txtTopic.Text);
             cmd.Parameters.AddWithValue("@speaker", hfSpeaker.Value);
@@ -481,6 +481,13 @@ public partial class Seminars : System.Web.UI.Page
 
     protected void lnkProfile_Click(object sender, EventArgs e)
     {
+        GetAccountModalInfo();
+
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "profileModal", "$('#profileModal').modal();", true);
+    }
+
+    private void GetAccountModalInfo()
+    {
         upsuccess.Visible = false;
         uperror.Visible = false;
         upserverror.Visible = false;
@@ -508,13 +515,22 @@ public partial class Seminars : System.Web.UI.Page
                         txtUpEAdd.Text = dr["UserEmail"].ToString();
                         txtUpMNo.Text = dr["UserMobileNo"].ToString();
                         txtUpAddr.Text = dr["UserAddress"].ToString();
-                        txtUPDb.Text = dr["UserBday"].ToString();
+                        DateTime bDay = DateTime.Parse(dr["UserBday"].ToString());
+                        txtUPDb.Text = bDay.ToString("yyyy-MM-dd");
+
+                        txtFN2.Text = dr["UserFirstName"].ToString();
+                        txtMN2.Text = dr["UserMidName"].ToString();
+                        txtLN2.Text = dr["UserLastName"].ToString();
+                        txtComp2.Text = dr["UserCompany"].ToString();
+                        txtPos2.Text = dr["UserPosition"].ToString();
+                        txtEadd2.Text = dr["UserEmail"].ToString();
+                        txtMNo2.Text = dr["UserMobileNo"].ToString();
+                        txtAddr2.Text = dr["UserAddress"].ToString();
+                        txtBday2.Text = bDay.ToString("yyyy-MM-dd");
                     }
                 }
             }
         }
-
-        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "profileModal", "$('#profileModal').modal();", true);
     }
 
     protected void lnkLogin_Click(object sender, EventArgs e)
@@ -529,6 +545,13 @@ public partial class Seminars : System.Web.UI.Page
         servererror4.Visible = false;
         emailerror2.Visible = false;
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "registerModal", "$('#registerModal').modal();", true);
+    }
+
+    protected void lnkUpdate2_Click(object sender, EventArgs e)
+    {
+        GetAccountModalInfo();
+
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "profileModal", "$('#profileModal').modal();", true);
     }
 
     protected void lvSeminars_ItemCommand(object sender, ListViewCommandEventArgs e)
@@ -567,7 +590,7 @@ public partial class Seminars : System.Web.UI.Page
             else
             {
                 cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
-                    SeminarLocation, SeminarDate, 
+                    SeminarLocation, SeminarDate, SeminarFee,
                     (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
                     FROM Seminars
                     INNER JOIN SeminarSpeakers ON Seminars.SeminarSpeaker = SeminarSpeakers.SeminarSpeakerID 
@@ -584,6 +607,7 @@ public partial class Seminars : System.Web.UI.Page
                         ltRsvpUnits.Text = dr["SeminarUnits"].ToString();
                         ltRsvpSpeaker.Text = dr["Speaker"].ToString();
                         ltRsvpVenue.Text = dr["SeminarLocation"].ToString();
+                        ltPrice.Text = dr["SeminarFee"].ToString();
                     }
                 }
 
@@ -615,7 +639,7 @@ public partial class Seminars : System.Web.UI.Page
                         cmd.CommandText = @"INSERT INTO Users
                             (UserFirstName, UserLastName, UserMidName, UserBday, UserCompany, UserPosition, UserEmail,
                             UserMobileNo, UserAddress, UserPassword, UserStatus, UserType, DateAdded, UserIP) VALUES
-                            (@fn, @mn, @ln, @bday, @comp, @pos, @email, @mobile, @addr, @pass, @status, @type, @dadded, @ip);
+                            (@fn, @ln, @mn, @bday, @comp, @pos, @email, @mobile, @addr, @pass, @status, @type, @dadded, @ip);
                             SELECT TOP 1 UserID FROM Users ORDER BY UserID DESC";
                         cmd.Parameters.AddWithValue("@fn", txtFN.Text);
                         cmd.Parameters.AddWithValue("@mn", txtMN.Text);
@@ -761,9 +785,9 @@ public partial class Seminars : System.Web.UI.Page
             using (SqlConnection con = new SqlConnection(Helper.GetCon()))
             using (SqlCommand cmd = new SqlCommand())
             {
-                //try
-                //{
-                //    upserverror.Visible = false;
+                try
+                {
+                    upserverror.Visible = false;
 
                     con.Open();
                     cmd.Connection = con;
@@ -772,13 +796,13 @@ public partial class Seminars : System.Web.UI.Page
                     {
                         cmd.CommandText = @"UPDATE Users SET UserFirstName = @fn, UserMidName = @mn,
                         UserLastName = @ln, UserBday = @bday, UserCompany = @comp, UserPosition = @pos, UserEmail = @email,
-                        UserMobileNo = @mobno, UserAddress = @addr WHERE UserID = @id";
+                        UserMobileNo = @mobno, UserAddress = @addr, DateModified = @dmod WHERE UserID = @id";
                     }
                     else
                     {
                         cmd.CommandText = @"UPDATE Users SET UserFirstName = @fn, UserMidName = @mn,
                         UserLastName = @ln, UserBday = @bday, UserCompany = @comp, UserPosition = @pos, UserEmail = @email,
-                        UserMobileNo = @mobno, UserAddress = @addr, UserPassword = @pass WHERE UserID = @id";
+                        UserMobileNo = @mobno, UserAddress = @addr, UserPassword = @pass, DateModified = @dmod WHERE UserID = @id";
                     }
                     cmd.Parameters.AddWithValue("@id", Session["userid"].ToString());
                     cmd.Parameters.AddWithValue("fn", txtUpFN.Text);
@@ -791,14 +815,15 @@ public partial class Seminars : System.Web.UI.Page
                     cmd.Parameters.AddWithValue("@mobno", txtUpMNo.Text);
                     cmd.Parameters.AddWithValue("@addr", txtUpAddr.Text);
                     cmd.Parameters.AddWithValue("@pass", Helper.CreateSHAHash(txtUpPass.Text));
+                    cmd.Parameters.AddWithValue("@dmod", DateTime.Now);
                     cmd.ExecuteNonQuery();
 
                     upsuccess.Visible = true;
-                //}
-                //catch
-                //{
-                //    upserverror.Visible = true;
-                //}
+                }
+                catch
+                {
+                    upserverror.Visible = true;
+                }
             }
         }
 

@@ -46,7 +46,11 @@
                         <div class="form-group">
                             <label class="control-label col-lg-3">Seminar Price</label>
                             <div class="col-lg-6">
-                                <asp:TextBox ID="txtPrice" class="form-control" runat="server" TextMode="Number" required />
+                                <div class="input-group">
+                                    <span class="input-group-addon">₱</span>
+                                    <asp:TextBox ID="txtPrice" class="form-control" runat="server" TextMode="Number" required />
+                                    <span class="input-group-addon">.00</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -60,7 +64,10 @@
                         <div class="form-group">
                             <label class="control-label col-lg-3">Date</label>
                             <div class="col-lg-6">
-                                <asp:TextBox ID="txtDate" class="form-control" runat="server" TextMode="Date" required />
+                                <div class="input-group date" id="datepicker-pastdisabled">
+                                    <asp:TextBox ID="txtDate" class="form-control" runat="server" TextMode="Date" required />
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
