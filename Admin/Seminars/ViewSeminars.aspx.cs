@@ -26,4 +26,5 @@ public partial class Admin_Seminars_ViewSeminars : System.Web.UI.Page
     {
 
     }
+
 }

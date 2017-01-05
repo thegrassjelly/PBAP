@@ -343,7 +343,7 @@
                                         <div class="col-lg-4">
                                             <div class="panel panel-default">
                                                 <br />
-                                                    <center>
+                                                <center>
                                                         <span id="spnRsvpHeader">
                                                             <asp:Literal ID="ltRsvpHeader" runat="server" />
                                                         </span>
@@ -369,14 +369,15 @@
                                                     <span class="spanRsvpWeight">Venue
                                                     </span>
                                                     <asp:Literal ID="ltRsvpVenue" runat="server" />
-                                                </div> 
+                                                </div>
                                                 <hr />
                                             </div>
                                         </div>
                                         <div id="pnlAccount" class="col-lg-8" runat="server">
-                                            <div class="panel panel-default">
-                                                <div class="panel-body">
-                                                    <div class="col-lg-6">
+                                            <div class="col-lg-6">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+
                                                         <center><h4>Login</h4>
                                                         <span style="font-size: small;">Existing Users</span></center>
                                                         <hr />
@@ -411,8 +412,14 @@
                                                         <asp:Button id="btnLogin" class="btn btn-primary"
                                                             Text="Login" OnClick="btnLogin_Click" runat="server" />
                                                     </center>
+
                                                     </div>
-                                                    <div class="col-lg-6">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+
                                                         <center><h4>Create New Account</h4>
                                                         <span style="font-size: small;">New Users</span></center>
                                                         <hr />
@@ -550,7 +557,6 @@
                                         <div id="pnlReserve" class="col-lg-8" runat="server">
                                             <div class="panel panel-default">
                                                 <div class="panel-body">
-
                                                 </div>
                                             </div>
                                         </div>
