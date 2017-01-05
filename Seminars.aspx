@@ -201,25 +201,14 @@
                     </div>
                     <div class="col-lg-12">
                         <hr />
-                        <div class="col-lg-5">
+                        <div class="col-lg-6">
                             <asp:TextBox ID="txtTopic" class="form-control autosuggest" runat="server"
                                 AutoPostBack="true" OnTextChanged="txtTopic_TextChanged" Placeholder="Filter Thematic Area" />
                         </div>
-                        <div class="col-lg-5">
+                        <div class="col-lg-6">
                             <asp:TextBox ID="txtSpeaker" class="form-control" runat="server"
                                 AutoPostBack="true" OnTextChanged="txtSpeaker_TextChanged" Placeholder="Filter Seminar Speaker" />
                             <asp:HiddenField ID="hfSpeaker" Value="0" runat="server" />
-                        </div>
-                        <div class="col-lg-2">
-                            <asp:DropDownList ID="ddlDay" class="form-control" runat="server"
-                                AutoPostBack="true" OnSelectedIndexChanged="ddlDay_SelectedIndexChanged">
-                                <asp:ListItem>All Days</asp:ListItem>
-                                <asp:ListItem>Monday</asp:ListItem>
-                                <asp:ListItem>Tuesday</asp:ListItem>
-                                <asp:ListItem>Wednesday</asp:ListItem>
-                                <asp:ListItem>Thursday</asp:ListItem>
-                                <asp:ListItem>Friday</asp:ListItem>
-                            </asp:DropDownList>
                         </div>
                     </div>
                     <div class="col-lg-12">
@@ -350,6 +339,10 @@
                                                     </center>
                                                 <hr />
                                                 <div class="panel-body">
+                                                    <span class="spanRsvpWeight">Seminar Code 
+                                                    </span>
+                                                    <asp:Literal ID="ltCode" runat="server" />
+                                                    <br />
                                                     <span class="spanRsvpWeight">Date 
                                                     </span>
                                                     <asp:Literal ID="ltRsvpDate" runat="server" />
@@ -423,7 +416,6 @@
                                             <div class="col-lg-6">
                                                 <div class="panel panel-default">
                                                     <div class="panel-body">
-
                                                         <center><h4>Create New Account</h4>
                                                         <span style="font-size: small;">New Users</span></center>
                                                         <hr />
@@ -561,16 +553,18 @@
                                         <div id="pnlReserve" class="col-lg-8" runat="server">
                                             <div class="panel panel-default">
                                                 <div class="panel-body">
+                                                    <div id="reservationsuccess" runat="server" class="alert alert-success" visible="false">
+                                                        Reservation Successful. Please check your email for further anouncements and possible changes.
+                                                    </div>
                                                     <ul class="nav nav-tabs">
                                                         <li class="active"><a href="#tab_a" data-toggle="tab"><b>Step 1 - Verify Information</b></a></li>
-                                                        <li><a href="#tab_b" data-toggle="tab"><b>Step 2 - Payment Method</b></a></li>
-                                                        <li><a href="#tab_c" data-toggle="tab"><b>Step 3 - Confirm Reservation</b></a></li>
+                                                        <li><a href="#tab_b" data-toggle="tab"><b>Step 2 - Confirm Reservation</b></a></li>
                                                     </ul>
                                                     <div class="tab-content">
                                                         <div class="tab-pane active" id="tab_a">
                                                             <br />
                                                             <center><p>
-                                                            <asp:LinkButton ID="lnkUpdate2" runat="server" OnClick="lnkUpdate2_Click">Update Account Information</asp:LinkButton>
+                                                            <u><asp:LinkButton ID="lnkUpdate2" runat="server" OnClick="lnkUpdate2_Click">Update Account Information</asp:LinkButton></u>
                                                             </p></center>
                                                             <hr />
                                                             <div class="col-lg-6">
@@ -633,10 +627,99 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <br />
                                                         </div>
                                                         <div class="tab-pane" id="tab_b">
-                                                        </div>
-                                                        <div class="tab-pane" id="tab_c">
+                                                            <br />
+                                                            <asp:HiddenField id="hfSeminarID" runat="server" Value="0" />
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-3">Seminar Code</label>
+                                                                <div class="col-lg-3">
+                                                                    <asp:TextBox ID="txtConfirmCode" class="form-control" runat="server" disabled />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-3">Dates</label>
+                                                                <div class="col-lg-4">
+                                                                    <asp:TextBox ID="txtConfirmDate" class="form-control" runat="server" disabled />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-3">Title</label>
+                                                                <div class="col-lg-5">
+                                                                    <asp:TextBox ID="txtConfirmTitle" class="form-control" runat="server" disabled />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-3">Competency</label>
+                                                                <div class="col-lg-5">
+                                                                    <asp:TextBox ID="txtConfirmCompt" class="form-control" runat="server" disabled />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-3">Units</label>
+                                                                <div class="col-lg-2">
+                                                                    <asp:TextBox ID="txtConfirmUnit" class="form-control" runat="server" disabled />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-3">Speaker</label>
+                                                                <div class="col-lg-5">
+                                                                    <asp:TextBox ID="txtConfirmSpeaker" class="form-control" runat="server" disabled />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-3">Venue</label>
+                                                                <div class="col-lg-5">
+                                                                    <asp:TextBox ID="txtConfirmVenue" class="form-control" runat="server" disabled />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-3">Fee</label>
+                                                                <div class="col-lg-3">
+                                                                    <asp:TextBox ID="txtConfirmFee" class="form-control" runat="server" disabled />
+                                                                </div>
+                                                            </div>
+                                                             <div class="form-group">
+                                                                <label class="control-label col-lg-3">Payment Method</label>
+                                                                <div class="col-lg-4">
+                                                                    <asp:DropDownList ID="ddlPaymentMethod" class="form-control" runat="server">
+                                                                        <asp:ListItem>Cash</asp:ListItem>
+                                                                        <asp:ListItem>Bank Deposit</asp:ListItem>
+                                                                    </asp:DropDownList>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-3">Promo Code</label>
+                                                                <div class="col-lg-3">
+                                                                    <asp:TextBox ID="txtVoucher" class="form-control" runat="server" disabled />
+                                                                </div>
+                                                            </div>
+                                                            <hr />
+                                                            <div class="form-group">
+                                                                <label class="col-xs-3 control-label">Terms of use</label>
+                                                                <div class="col-xs-9">
+                                                                    <div style="border: 1px solid #e5e5e5; height: 200px; overflow: auto; padding: 10px;">
+                                                                        <p>Lorem ipsum dolor sit amet, veniam numquam has te. No suas nonumes recusabo mea, est ut graeci definitiones. His ne melius vituperata scriptorem, cum paulo copiosae conclusionemque at. Facer inermis ius in, ad brute nominati referrentur vis. Dicat erant sit ex. Phaedrum imperdiet scribentur vix no, ad latine similique forensibus vel.</p>
+                                                                        <p>Dolore populo vivendum vis eu, mei quaestio liberavisse ex. Electram necessitatibus ut vel, quo at probatus oportere, molestie conclusionemque pri cu. Brute augue tincidunt vim id, ne munere fierent rationibus mei. Ut pro volutpat praesent qualisque, an iisque scripta intellegebat eam.</p>
+                                                                        <p>Mea ea nonumy labores lobortis, duo quaestio antiopam inimicus et. Ea natum solet iisque quo, prodesset mnesarchum ne vim. Sonet detraxit temporibus no has. Omnium blandit in vim, mea at omnium oblique.</p>
+                                                                        <p>Eum ea quidam oportere imperdiet, facer oportere vituperatoribus eu vix, mea ei iisque legendos hendrerit. Blandit comprehensam eu his, ad eros veniam ridens eum. Id odio lobortis elaboraret pro. Vix te fabulas partiendo.</p>
+                                                                        <p>Natum oportere et qui, vis graeco tincidunt instructior an, autem elitr noster per et. Mea eu mundi qualisque. Quo nemore nusquam vituperata et, mea ut abhorreant deseruisse, cu nostrud postulant dissentias qui. Postea tincidunt vel eu.</p>
+                                                                        <p>Ad eos alia inermis nominavi, eum nibh docendi definitionem no. Ius eu stet mucius nonumes, no mea facilis philosophia necessitatibus. Te eam vidit iisque legendos, vero meliore deserunt ius ea. An qui inimicus inciderint.</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <div class="col-xs-9 col-xs-offset-3">
+                                                                                                                           
+                                                            <asp:LinkButton ID="lnkConfirmReservation" runat="server"
+                                                                OnClick="lnkConfirmReservation_Click"
+                                                                OnClientClick='return confirm("By confirming, you accept the terms and agreements stated above. Continue?");' 
+                                                                ToolTip="Refresh Item">
+                                                                <i class="fa fa-check"></i> Confirm Reservation</asp:LinkButton>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

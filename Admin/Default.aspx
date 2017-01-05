@@ -8,46 +8,48 @@
         <div class="row">
             <div class="col-md-3 col-xs-12 col-sm-6">
                 <a class="info-tiles tiles-toyo" href="#">
-                    <div class="tiles-heading">Profit</div>
+                    <div class="tiles-heading">Total Reservations</div>
                     <div class="tiles-body-alt">
                         <!--i class="fa fa-bar-chart-o"></i-->
-                        <div class="text-center"><span class="text-top">$</span>854</div>
-                        <small>+8.7% from last period</small>
+                        <div class="text-center">854</div>
+                        <small>For the month of <asp:Literal ID="ltCurrentMonth" runat="server" /></small>
                     </div>
-                    <div class="tiles-footer">more info</div>
-                </a>
-            </div>
-            <div class="col-md-3 col-xs-12 col-sm-6">
-                <a class="info-tiles tiles-success" href="#">
-                    <div class="tiles-heading">Revenue</div>
-                    <div class="tiles-body-alt">
-                        <!--i class="fa fa-money"></i-->
-                        <div class="text-center"><span class="text-top">$</span>22.7<span class="text-smallcaps">k</span></div>
-                        <small>-13.5% from last week</small>
-                    </div>
-                    <div class="tiles-footer">go to accounts</div>
-                </a>
-            </div>
-            <div class="col-md-3 col-xs-12 col-sm-6">
-                <a class="info-tiles tiles-orange" href="#">
-                    <div class="tiles-heading">Members</div>
-                    <div class="tiles-body-alt">
-                        <i class="fa fa-group"></i>
-                        <div class="text-center">109</div>
-                        <small>new users registered</small>
-                    </div>
-                    <div class="tiles-footer">manage members</div>
+                    <div class="tiles-footer">go to reservations</div>
                 </a>
             </div>
             <div class="col-md-3 col-xs-12 col-sm-6">
                 <a class="info-tiles tiles-alizarin" href="#">
-                    <div class="tiles-heading">Orders</div>
+                    <div class="tiles-heading">Pending Reservations</div>
                     <div class="tiles-body-alt">
-                        <i class="fa fa-shopping-cart"></i>
+                        <i class="fa fa-check"></i>
                         <div class="text-center">57</div>
-                        <small>new orders received</small>
+                        <small>For the month of <asp:Literal ID="ltCurrentMonth3" runat="server" /></small>
                     </div>
-                    <div class="tiles-footer">manage orders</div>
+                    <div class="tiles-footer">go to reservations</div>
+                </a>
+            </div>
+            <div class="col-md-3 col-xs-12 col-sm-6">
+                <a class="info-tiles tiles-success" href="#">
+                    <div class="tiles-heading">Total Unpaid Reservations</div>
+                    <div class="tiles-body-alt">
+                        <!--i class="fa fa-money"></i-->
+                        <div class="text-center"><span class="text-top">₱</span>1252</div>
+                        <small>For the month of <asp:Literal ID="ltCurrentMonth2" runat="server" /></small>
+                    </div>
+                    <div class="tiles-footer">go to payments</div>
+                </a>
+            </div>
+            <div class="col-md-3 col-xs-12 col-sm-6">
+                <a class="info-tiles tiles-orange" href="#">
+                    <div class="tiles-heading">New Members</div>
+                    <div class="tiles-body-alt">
+                        <i class="fa fa-group"></i>
+                        <div class="text-center">109</div>
+                        <small>For the month of
+                            <asp:Literal ID="ltMonth4" runat="server" />
+                        </small>
+                    </div>
+                    <div class="tiles-footer">manage users</div>
                 </a>
             </div>
         </div>

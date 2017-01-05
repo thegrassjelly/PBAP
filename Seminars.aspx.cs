@@ -135,56 +135,28 @@ public partial class Seminars : System.Web.UI.Page
 
             if (!string.IsNullOrEmpty(txtTopic.Text) && string.IsNullOrEmpty(txtSpeaker.Text))
             {
-                if (ddlDay.SelectedValue == "All Days")
-                {
-                    cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
+                cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
                     SeminarLocation, SeminarDate, 
                     (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
                     FROM Seminars
                     INNER JOIN SeminarSpeakers ON Seminars.SeminarSpeaker = SeminarSpeakers.SeminarSpeakerID
                     WHERE SeminarArea = @topic
                     ORDER BY SeminarDate ASC";
-                }
-                else
-                {
-                    cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
-                    SeminarLocation, SeminarDate, 
-                    (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
-                    FROM Seminars
-                    INNER JOIN SeminarSpeakers ON Seminars.SeminarSpeaker = SeminarSpeakers.SeminarSpeakerID
-                    WHERE SeminarArea = @topic AND DATENAME(WEEKDAY, SeminarDate) = @day
-                    ORDER BY SeminarDate ASC";
-                }
 
             }
             else if (string.IsNullOrEmpty(txtTopic.Text) && !string.IsNullOrEmpty(txtSpeaker.Text))
             {
-                if (ddlDay.SelectedValue == "All Days")
-                {
-                    cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
+                cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
                     SeminarLocation, SeminarDate, 
                     (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
                     FROM Seminars
                     INNER JOIN SeminarSpeakers ON Seminars.SeminarSpeaker = SeminarSpeakers.SeminarSpeakerID
                     WHERE SeminarSpeaker = @speaker
                     ORDER BY SeminarDate ASC";
-                }
-                else
-                {
-                    cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
-                    SeminarLocation, SeminarDate, 
-                    (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
-                    FROM Seminars
-                    INNER JOIN SeminarSpeakers ON Seminars.SeminarSpeaker = SeminarSpeakers.SeminarSpeakerID
-                    WHERE SeminarSpeaker = @speaker AND DATENAME(WEEKDAY, SeminarDate) = @day
-                    ORDER BY SeminarDate ASC";
-                }
             }
             else if (!string.IsNullOrEmpty(txtTopic.Text) && !string.IsNullOrEmpty(txtSpeaker.Text))
             {
-                if (ddlDay.SelectedValue == "All Days")
-                {
-                    cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
+                cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
                     SeminarLocation, SeminarDate, 
                     (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
                     FROM Seminars
@@ -192,43 +164,17 @@ public partial class Seminars : System.Web.UI.Page
                     WHERE SeminarSpeaker = @speaker AND
                           SeminarArea = @topic
                     ORDER BY SeminarDate ASC";
-                }
-                else
-                {
-                    cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
-                    SeminarLocation, SeminarDate, 
-                    (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
-                    FROM Seminars
-                    INNER JOIN SeminarSpeakers ON Seminars.SeminarSpeaker = SeminarSpeakers.SeminarSpeakerID
-                    WHERE SeminarSpeaker = @speaker AND
-                          SeminarArea = @topic AND DATENAME(WEEKDAY, SeminarDate) = @day
-                    ORDER BY SeminarDate ASC";
-                }
             }
             else
             {
-                if (ddlDay.SelectedValue == "All Days")
-                {
-                    cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
+                cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
                     SeminarLocation, SeminarDate, 
                     (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
                     FROM Seminars
                     INNER JOIN SeminarSpeakers ON Seminars.SeminarSpeaker = SeminarSpeakers.SeminarSpeakerID
                     ORDER BY SeminarDate ASC";
-                }
-                else
-                {
-                    cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
-                    SeminarLocation, SeminarDate, 
-                    (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
-                    FROM Seminars
-                    INNER JOIN SeminarSpeakers ON Seminars.SeminarSpeaker = SeminarSpeakers.SeminarSpeakerID
-                    WHERE DATENAME(WEEKDAY, SeminarDate) = @day
-                    ORDER BY SeminarDate ASC";
-                }
             }
 
-            cmd.Parameters.AddWithValue("@day", ddlDay.SelectedValue);
             cmd.Parameters.AddWithValue("@topic", txtTopic.Text);
             cmd.Parameters.AddWithValue("@speaker", hfSpeaker.Value);
             cmd.Parameters.AddWithValue("@dateone", startDate);
@@ -551,11 +497,13 @@ public partial class Seminars : System.Web.UI.Page
     {
         GetAccountModalInfo();
 
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "reserveSeminar", "$('#reserveSeminar').modal('hide');", true);
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "profileModal", "$('#profileModal').modal();", true);
     }
 
     protected void lvSeminars_ItemCommand(object sender, ListViewCommandEventArgs e)
     {
+        reservationsuccess.Visible = false;
         emailerror.Visible = false;
         loginerror.Visible = false;
         servererror.Visible = false;
@@ -589,7 +537,7 @@ public partial class Seminars : System.Web.UI.Page
             }
             else
             {
-                cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
+                cmd.CommandText = @"SELECT SeminarID, SeminarCode, SeminarTitle, SeminarArea, SeminarUnits,
                     SeminarLocation, SeminarDate, SeminarFee,
                     (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
                     FROM Seminars
@@ -601,13 +549,26 @@ public partial class Seminars : System.Web.UI.Page
                 {
                     if (dr.Read())
                     {
+                        DateTime SeminarDate = DateTime.Parse(dr["SeminarDate"].ToString());
+
+                        hfSeminarID.Value = dr["SeminarID"].ToString();
+                        ltCode.Text = dr["SeminarCode"].ToString();
                         ltRsvpHeader.Text = dr["SeminarTitle"].ToString();
                         ltRsvpArea.Text = dr["SeminarArea"].ToString();
-                        ltRsvpDate.Text = dr["SeminarDate"].ToString();
+                        ltRsvpDate.Text = SeminarDate.ToString("MMMM dd yyyy");
                         ltRsvpUnits.Text = dr["SeminarUnits"].ToString();
                         ltRsvpSpeaker.Text = dr["Speaker"].ToString();
                         ltRsvpVenue.Text = dr["SeminarLocation"].ToString();
                         ltPrice.Text = dr["SeminarFee"].ToString();
+
+                        txtConfirmCode.Text = dr["SeminarCode"].ToString();
+                        txtConfirmTitle.Text = dr["SeminarTitle"].ToString();
+                        txtConfirmCompt.Text = dr["SeminarArea"].ToString();
+                        txtConfirmDate.Text = SeminarDate.ToString("MMMM dd yyyy");
+                        txtConfirmUnit.Text = dr["SeminarUnits"].ToString();
+                        txtConfirmSpeaker.Text = dr["Speaker"].ToString();
+                        txtConfirmVenue.Text = dr["SeminarLocation"].ToString();
+                        txtConfirmFee.Text = dr["SeminarFee"].ToString();
                     }
                 }
 
@@ -835,11 +796,6 @@ public partial class Seminars : System.Web.UI.Page
     #endregion
 
     #region Events
-    protected void ddlDay_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        GetSeminars();
-    }
-
     protected void txtDate_TextChanged(object sender, EventArgs e)
     {
         GetSeminarDate();
@@ -865,4 +821,38 @@ public partial class Seminars : System.Web.UI.Page
         GetSeminars();
     }
     #endregion
+
+    protected void lnkConfirmReservation_Click(object sender, EventArgs e)
+    {
+        using (var con = new SqlConnection(Helper.GetCon()))
+        using (var cmd = new SqlCommand())
+        {
+            con.Open();
+            cmd.Connection = con;
+
+            cmd.CommandText = @"INSERT INTO Payments
+                (PaymentAmount, PaymentStatus, PaymentType, UserID)
+                VALUES (@amount, @status, @type, @id); SELECT TOP 1 PaymentID
+                FROM Payments WHERE UserID = @id ORDER BY PaymentID DESC";
+            cmd.Parameters.AddWithValue("id", Session["UserID"].ToString());
+            cmd.Parameters.AddWithValue("@amount", txtConfirmFee.Text);
+            cmd.Parameters.AddWithValue("@status", "Unpaid");
+            cmd.Parameters.AddWithValue("@type", ddlPaymentMethod.SelectedValue);
+            int payID = (int)cmd.ExecuteScalar();
+
+            cmd.CommandText = @"INSERT INTO Reservations
+                (SeminarID, UserID, PaymentID, VoucherID, ReservationStatus, DateAdded)
+                VALUES
+                (@semid, @userid, @payid, @vouchid, @restatus, @dadd)";
+            cmd.Parameters.AddWithValue("@semid", hfSeminarID.Value);
+            cmd.Parameters.AddWithValue("@userid", Session["UserID"].ToString());
+            cmd.Parameters.AddWithValue("@payid", payID);
+            cmd.Parameters.AddWithValue("@vouchid", "");
+            cmd.Parameters.AddWithValue("@restatus", "Pending");
+            cmd.Parameters.AddWithValue("@dadd", DateTime.Now);
+            cmd.ExecuteNonQuery();
+        }
+
+        reservationsuccess.Visible = true;
+    }
 }
