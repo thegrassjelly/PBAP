@@ -6,7 +6,7 @@ public partial class Admin_Seminars_ViewSeminars : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        // Helper.ValidateAdmin();
+        Helper.ValidateAdmin();
 
         if (!IsPostBack)
         {
@@ -33,7 +33,7 @@ public partial class Admin_Seminars_ViewSeminars : System.Web.UI.Page
                             SeminarTitle LIKE @keyword OR 
                             SeminarArea LIKE @keyword OR 
                             SeminarLocation LIKE @keyword OR
-                            SeminarDate LIKE @keyword) AND SeminarStatus = @status ORDER BY SeminarTitle ASC";
+                            SeminarDate LIKE @keyword) AND SeminarStatus = @status ORDER BY DateAdded DESC";
             cmd.Parameters.AddWithValue("@status", ddlStatus.SelectedValue);
             cmd.Parameters.AddWithValue("@keyword", "%" + text + "%");
             SqlDataAdapter da = new SqlDataAdapter(cmd);

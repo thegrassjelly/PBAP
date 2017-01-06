@@ -5,7 +5,7 @@ public partial class Admin_Users_UpdateUsers : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        // Helper.ValidateAdmin();
+        Helper.ValidateAdmin();
 
         int userID = 0;
         bool validUser = int.TryParse(Request.QueryString["ID"], out userID);
@@ -15,6 +15,13 @@ public partial class Admin_Users_UpdateUsers : System.Web.UI.Page
             if (!IsPostBack)
             {
                 GetUser(userID);
+            }
+        }
+        else if (Request.QueryString["Profile"] == "1")
+        {
+            if (!IsPostBack)
+            {
+                GetUser(int.Parse(Session["userid"].ToString()));
             }
         }
     }
@@ -68,7 +75,16 @@ public partial class Admin_Users_UpdateUsers : System.Web.UI.Page
                         UserLastName = @ln, UserBday = @bday, UserCompany = @comp, UserPosition = @pos, UserEmail = @email,
                         UserFaxNo = @fax, UserTelNo = @tel, UserMobileNo = @mobno, UserAddress = @addr, UserStatus = @status,
                         UserType = @type, DateModified = @dmod WHERE UserID = @id";
-            cmd.Parameters.AddWithValue("@id", Request.QueryString["ID"].ToString());
+
+            if (Request.QueryString["Profile"] == "1")
+            {
+                cmd.Parameters.AddWithValue("@id", Session["userid"].ToString());
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@id", Request.QueryString["ID"].ToString());
+            }
+
             cmd.Parameters.AddWithValue("fn", txtFN.Text);
             cmd.Parameters.AddWithValue("@mn", txtMN.Text);
             cmd.Parameters.AddWithValue("@ln", txtLN.Text);

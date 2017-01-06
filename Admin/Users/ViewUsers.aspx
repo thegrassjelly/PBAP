@@ -23,6 +23,7 @@
                             <div class="input-group">
                                 <asp:DropDownList ID="ddlType" runat="server" class="form-control"
                                     AutoPostBack="True" OnSelectedIndexChanged="ddlType_SelectedIndexChanged">
+                                    <asp:ListItem Text="All Users" />
                                     <asp:ListItem Text="User" Value="User" />
                                     <asp:ListItem Text="Admin" Value="Admin" />
                                 </asp:DropDownList>

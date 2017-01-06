@@ -43,13 +43,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-lg-3">Description</label>
-                            <div class="col-lg-6">
-                                <asp:TextBox ID="txtDesc" runat="server" TextMode="MultiLine"
-                                    class="form-control" Style="max-width: 100%;" />
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label class="control-label col-lg-3">Seminar Price</label>
                             <div class="col-lg-6">
                                 <div class="input-group">
@@ -89,6 +82,15 @@
                             <label class="control-label col-lg-3">Speaker</label>
                             <div class="col-lg-6">
                                 <asp:DropDownList ID="ddlSpeaker" class="form-control" runat="server" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="control-label col-lg-1">Description</label>
+                            <div class="col-lg-10">
+                                <asp:TextBox ID="txtDesc" runat="server" TextMode="MultiLine"
+                                    class="form-control" Style="max-width: 100%;" />
                             </div>
                         </div>
                     </div>

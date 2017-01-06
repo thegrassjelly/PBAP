@@ -23,8 +23,11 @@ public partial class Admin_Users_ViewUsers : System.Web.UI.Page
         using (var cmd = new SqlCommand())
         {
             con.Open();
-            cmd.Connection = con; 
-            cmd.CommandText = @"SELECT UserID, UserLastName + ', ' + UserFirstName + ' ' + UserMidName AS UserName, 
+            cmd.Connection = con;
+
+            if (ddlType.SelectedValue == "All Users")
+            {
+                cmd.CommandText = @"SELECT UserID, UserLastName + ', ' + UserFirstName + ' ' + UserMidName AS UserName, 
                             UserCompany, UserPosition, UserEmail, UserMobileNo, UserStatus, UserType, DateAdded, DateModified
                             FROM Users
                             WHERE (UserID LIKE @keyword OR 
@@ -32,7 +35,21 @@ public partial class Admin_Users_ViewUsers : System.Web.UI.Page
                             UserFirstName LIKE @keyword OR 
                             UserMidName LIKE @keyword OR 
                             UserCompany LIKE @keyword OR
-                            UserPosition LIKE @keyword) AND UserStatus = @status AND UserType = @type ORDER BY UserID ASC";
+                            UserPosition LIKE @keyword) AND UserStatus = @status ORDER BY DateAdded DESC";
+            }
+            else
+            {
+                cmd.CommandText = @"SELECT UserID, UserLastName + ', ' + UserFirstName + ' ' + UserMidName AS UserName, 
+                            UserCompany, UserPosition, UserEmail, UserMobileNo, UserStatus, UserType, DateAdded, DateModified
+                            FROM Users
+                            WHERE (UserID LIKE @keyword OR 
+                            UserLastName LIKE @keyword OR 
+                            UserFirstName LIKE @keyword OR 
+                            UserMidName LIKE @keyword OR 
+                            UserCompany LIKE @keyword OR
+                            UserPosition LIKE @keyword) AND UserStatus = @status AND UserType = @type ORDER BY DateAdded DESC";
+            }
+
             cmd.Parameters.AddWithValue("@status", ddlStatus.SelectedValue);
             cmd.Parameters.AddWithValue("@type", ddlType.SelectedValue);
             cmd.Parameters.AddWithValue("@keyword", "%" + text + "%");

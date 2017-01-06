@@ -381,7 +381,7 @@
                                                         <div id="loginerror" runat="server" class="alert alert-danger" visible="false">
                                                             Wrong Email/Password entered.
                                                         </div>
-                                                        <div id="servererror2" runat="server" class="alert alert-warning" visible="false">
+                                                        <div id="servererror" runat="server" class="alert alert-warning" visible="false">
                                                             Server error. Please call us for reservation.
                                                         </div>
                                                         <div class="form-group">
@@ -422,7 +422,7 @@
                                                         <div id="emailerror" runat="server" class="alert alert-danger" visible="false">
                                                             Email address already exist.
                                                         </div>
-                                                        <div id="servererror" runat="server" class="alert alert-warning" visible="false">
+                                                        <div id="servererror2" runat="server" class="alert alert-warning" visible="false">
                                                             Server error. Please call us for reservation.
                                                         </div>
                                                         <div class="form-group">
