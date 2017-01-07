@@ -22,7 +22,7 @@
         <asp:UpdatePanel runat="server">
             <ContentTemplate>
                 <div class="verticalcenter">
-                    <img src="../img/Untitled-3.png" alt="Logo" class="brand" style="width: 125px;" />
+                    <img src="../img/adminlogo.png" alt="Logo" class="brand" style="width: 125px;" />
                     <div class="panel panel-primary">
                         <div class="panel-body">
                             <div id="loginerror" runat="server" class="alert alert-danger" visible="false">
