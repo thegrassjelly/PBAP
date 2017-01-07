@@ -10,6 +10,8 @@
     <meta name="description" content="PBAP">
     <meta name="author" content="Robert Steven Tomas">
 
+    <link rel="shortcut icon" href="<%= Page.ResolveUrl("~/Admin/assets/img/favicon.ico") %>" type="image/x-icon" />
+
     <!-- <link href="assets/less/styles.less" rel="stylesheet/less" media="all">  -->
     <link rel="stylesheet" href='<%= Page.ResolveUrl("~/Admin/assets/css/styles.css?=140") %>'>
 
@@ -155,13 +157,13 @@
                 <li><a href="<%= Page.ResolveUrl("~/Admin/Default.aspx") %>"><i class="fa fa-home"></i><span>Dashboard</span></a></li>
                 <li class="divider"></li>
                 <li>
-                    <a href="javascript:;"><i class="fa fa-list"></i><span>Reservation</span></a>
+                    <a href="javascript:;"><i class="fa fa-calendar"></i><span>Reservation</span></a>
                     <ul class="acc-menu">
                         <li><a href="<%= Page.ResolveUrl("~/Admin/Reservations/ViewReservations.aspx") %>"><i class="fa fa-list"></i>View Reservation</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="javascript:;"><i class="fa fa-list"></i><span>Seminars</span></a>
+                    <a href="javascript:;"><i class="fa fa-fax"></i><span>Seminars</span></a>
                     <ul class="acc-menu">
                         <li><a href="<%= Page.ResolveUrl("~/Admin/Seminars/AddSeminars.aspx") %>"><i class="fa fa-plus"></i>Add Seminars</a></li>
                         <li><a href="<%= Page.ResolveUrl("~/Admin/Seminars/ViewSeminars.aspx") %>"><i class="fa fa-list"></i>View Seminars</a></li>
@@ -175,7 +177,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="javascript:;"><i class="fa fa-users"></i><span>Speakers</span></a>
+                    <a href="javascript:;"><i class="fa fa-graduation-cap"></i><span>Speakers</span></a>
                     <ul class="acc-menu">
                         <li><a href="<%= Page.ResolveUrl("~/Admin/Speakers/AddSpeakers.aspx") %>"><i class="fa fa-plus"></i>Add Speakers</a></li>
                         <li><a href="<%= Page.ResolveUrl("~/Admin/Speakers/ViewSpeakers.aspx") %>"><i class="fa fa-list"></i>View Speakers</a></li>

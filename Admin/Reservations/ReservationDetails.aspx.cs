@@ -98,8 +98,23 @@ public partial class Admin_Reservations_ReservationDetails : System.Web.UI.Page
                         txtUnits.Text = dr["SeminarUnits"].ToString();
                         txtFee.Text = dr["SeminarFee"].ToString();
                         txtLocation.Text = dr["SeminarLocation"].ToString();
-                        DateTime SeminarDate = DateTime.Parse(dr["SeminarDate"].ToString());
-                        txtDate.Text = SeminarDate.ToString("yyyy-MM-dd");
+
+                        if (dr["SeminarDate"].ToString() == "1/1/1900 12:00:00 AM")
+                        {
+                            pnlDate.Visible = false;
+                            pnlTBA.Visible = true;
+
+                            txtTBA.Text = "TBA";
+                        }
+                        else
+                        {
+                            pnlDate.Visible = true;
+                            pnlTBA.Visible = false;
+
+                            DateTime SeminarDate = DateTime.Parse(dr["SeminarDate"].ToString());
+                            txtDate.Text = SeminarDate.ToString("yyyy-MM-dd");
+                        }
+
                         DateTime DAdded = DateTime.Parse(dr["DateAdded"].ToString());
                         txtDAdded.Text = DAdded.ToString("yyyy-MM-dd");
                         DateTime RDate = DateTime.Parse(dr["RDate"].ToString());
@@ -158,16 +173,15 @@ public partial class Admin_Reservations_ReservationDetails : System.Web.UI.Page
         {
             con.Open();
             cmd.Connection = con;
-            cmd.CommandText = @"UPDATE Reservations SET ReservationStatus = @status
+            cmd.CommandText = @"UPDATE Reservations SET ReservationStatus = @status, DateModified = @dmod
                 WHERE ReservationID = @id";
             cmd.Parameters.AddWithValue("@id", Request.QueryString["ID"]);
             cmd.Parameters.AddWithValue("@status", ddlRStatus.SelectedValue);
+            cmd.Parameters.AddWithValue("@dmod", DateTime.Now);
             cmd.ExecuteNonQuery();
         }
 
-        GetUserInfo(int.Parse(Request.QueryString["ID"]));
         GetReservationInfo(int.Parse(Request.QueryString["ID"]));
-        GetPaymentInfo(int.Parse(Request.QueryString["ID"]));
         upsuccess.Visible = true;
     }
 
@@ -187,8 +201,6 @@ public partial class Admin_Reservations_ReservationDetails : System.Web.UI.Page
             cmd.ExecuteNonQuery();
         }
 
-        GetUserInfo(int.Parse(Request.QueryString["ID"]));
-        GetReservationInfo(int.Parse(Request.QueryString["ID"]));
         GetPaymentInfo(int.Parse(Request.QueryString["ID"]));
         paysuccess.Visible = true;
     }

@@ -33,6 +33,7 @@ public partial class Admin_Users_AddUsers : System.Web.UI.Page
             cmd.Parameters.AddWithValue("@status", ddlStatus.SelectedValue);
             cmd.Parameters.AddWithValue("@type", ddlType.SelectedValue);
             cmd.Parameters.AddWithValue("@dadded", DateTime.Now);
+            cmd.ExecuteNonQuery();
 
             Response.Redirect("ViewUsers.aspx");
         }

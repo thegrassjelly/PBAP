@@ -58,7 +58,7 @@
                             <label class="control-label col-lg-3">Date</label>
                             <div class="col-lg-6">
                                 <div class="input-group date" id="datepicker-pastdisabled">
-                                    <asp:TextBox ID="txtDate" class="form-control" runat="server" TextMode="Date" required />
+                                    <asp:TextBox ID="txtDate" class="form-control" runat="server" TextMode="Date" />
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                 </div>
                             </div>

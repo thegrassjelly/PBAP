@@ -1,21 +1,20 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Admin/admin.master" AutoEventWireup="true" CodeFile="ReservationDetails.aspx.cs" Inherits="Admin_Reservations_ReservationDetails" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-    <i class="fa fa-search"></i>Reservation Status
+    <i class="fa fa-search"></i> Reservation & Payment Details
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="Server">
     <form class="form-horizontal" runat="server">
         <asp:ScriptManager runat="server" />
         <div class="col-lg-12">
-
-            <div class="col-lg-7">
-                <div class="panel panel-midnightblue">
-                    <div class="panel-heading">
-                        Reservation Information
-                    </div>
-                    <div class="panel-body">
-                        <asp:UpdatePanel runat="server">
-                            <ContentTemplate>
+            <asp:UpdatePanel runat="server">
+                <ContentTemplate>
+                    <div class="col-lg-7">
+                        <div class="panel panel-midnightblue">
+                            <div class="panel-heading">
+                                Reservation Information
+                            </div>
+                            <div class="panel-body">
                                 <div id="upsuccess" runat="server" class="alert alert-success" visible="false">
                                     Reservation Status Updated.
                                 </div>
@@ -75,9 +74,14 @@
                                     <div class="form-group">
                                         <label class="control-label col-lg-4">Seminar Date</label>
                                         <div class="col-lg-7">
+                                            <div id="pnlTBA" runat="server" visible="false">
+                                                <asp:TextBox ID="txtTBA" class="form-control" runat="server" disabled />
+                                            </div>
+                                            <div id="pnlDate" runat="server">
                                             <div class="input-group date" id="datepicker-pastdisabled">
                                                 <asp:TextBox ID="txtDate" class="form-control" runat="server" TextMode="Date" disabled />
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                            </div>
                                             </div>
                                         </div>
                                     </div>
@@ -109,15 +113,15 @@
                                 <div class="col-lg-12">
                                     <hr />
                                     <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-lg-4">Reservation Date</label>
-                                        <div class="col-lg-7">
-                                            <div class="input-group date" id="datepicker-pastdisabled">
-                                                <asp:TextBox ID="txtRDate" class="form-control" runat="server" TextMode="Date" disabled />
-                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        <div class="form-group">
+                                            <label class="control-label col-lg-4">Reservation Date</label>
+                                            <div class="col-lg-7">
+                                                <div class="input-group date" id="datepicker-pastdisabled">
+                                                    <asp:TextBox ID="txtRDate" class="form-control" runat="server" TextMode="Date" disabled />
+                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
@@ -131,26 +135,28 @@
                                         </div>
                                     </div>
                                 </div>
-                            </ContentTemplate>
-                        </asp:UpdatePanel>
-                    </div>
-                    <div class="panel-footer">
-                        <div class="pull-right">
-                            <asp:Button ID="btnUpdateRStatus" class="btn btn-success" runat="server"
-                                Text="Update Reservation Status" OnClick="btnUpdateRStatus_Click" />
+                            </div>
+                            <div class="panel-footer">
+                                <div class="pull-right">
+                                    <asp:Button ID="btnUpdateRStatus" class="btn btn-success" runat="server"
+                                        Text="Update Reservation Status" OnClick="btnUpdateRStatus_Click" />
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="col-lg-5">
-                <div class="panel panel-midnightblue">
-                    <div class="panel-heading">
-                        Payment Information
-                    </div>
-                    <div class="panel-body">
-                        <asp:UpdatePanel runat="server">
-                            <ContentTemplate>
+                </ContentTemplate>
+                <Triggers>
+                    <asp:AsyncPostBackTrigger ControlID="btnUpdateRStatus" EventName="Click" />
+                </Triggers>
+            </asp:UpdatePanel>
+            <asp:UpdatePanel runat="server">
+                <ContentTemplate>
+                    <div class="col-lg-5">
+                        <div class="panel panel-midnightblue">
+                            <div class="panel-heading">
+                                Payment Information
+                            </div>
+                            <div class="panel-body">
                                 <div id="paysuccess" runat="server" class="alert alert-success" visible="false">
                                     Payment Status Updated.
                                 </div>
@@ -177,13 +183,13 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-lg-4">Payment Amount</label>
-                                        <div class="col-lg-5">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">₱</span>
-                                                <asp:TextBox ID="txtPaymentAmount" class="form-control" runat="server" TextMode="Number" disabled />
-                                                <span class="input-group-addon">.00</span>
-                                            </div>
+                                    <div class="col-lg-5">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">₱</span>
+                                            <asp:TextBox ID="txtPaymentAmount" class="form-control" runat="server" TextMode="Number" disabled />
+                                            <span class="input-group-addon">.00</span>
                                         </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-lg-4">Payment Type</label>
@@ -196,12 +202,12 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-lg-4">Payment Date</label>
-                                        <div class="col-lg-4">
-                                            <div class="input-group date" id="datepicker-pastdisabled">
-                                                <asp:TextBox ID="txtPaymentDate" class="form-control" runat="server" TextMode="Date" required />
-                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                            </div>
+                                    <div class="col-lg-4">
+                                        <div class="input-group date" id="datepicker-pastdisabled">
+                                            <asp:TextBox ID="txtPaymentDate" class="form-control" runat="server" TextMode="Date" required />
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                         </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-lg-4">Payment Status</label>
@@ -212,20 +218,21 @@
                                         </asp:DropDownList>
                                     </div>
                                 </div>
-                            </ContentTemplate>
-                        </asp:UpdatePanel>
-                    </div>
-                    <div class="panel-footer">
-                        <div class="pull-right">
-                            <asp:Button ID="btnUpdatePayStatus" class="btn btn-success" runat="server"
-                                Text="Update Payment Status" OnClick="btnUpdatePayStatus_Click" />
+                            </div>
+                            <div class="panel-footer">
+                                <div class="pull-right">
+                                    <asp:Button ID="btnUpdatePayStatus" class="btn btn-success" runat="server"
+                                        Text="Update Payment Status" OnClick="btnUpdatePayStatus_Click" />
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-
+                </ContentTemplate>
+                <Triggers>
+                    <asp:AsyncPostBackTrigger ControlID="btnUpdatePayStatus" EventName="Click" />
+                </Triggers>
+            </asp:UpdatePanel>
         </div>
-
         <div id="userInfo" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">

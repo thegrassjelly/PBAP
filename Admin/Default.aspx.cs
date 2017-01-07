@@ -109,7 +109,7 @@ public partial class Admin_Default : System.Web.UI.Page
                 {
                     if (dr.Read())
                     {
-                        ltDailyPendingRCount.Text = dr["RCount"].ToString();
+                        ltPendingRCount.Text = dr["RCount"].ToString();
                     }
                 }
             }
@@ -171,7 +171,7 @@ public partial class Admin_Default : System.Web.UI.Page
         {
             con.Open();
             cmd.Connection = con;
-            cmd.CommandText = @"SELECT SUM(PaymentAmount) AS TotalAmnt FROM
+            cmd.CommandText = @"SELECT ISNULL(SUM(PaymentAmount), 0) AS TotalAmnt FROM
                 Payments 
                 INNER JOIN Reservations ON Payments.PaymentID = Reservations.PaymentID
                 WHERE DateAdded BETWEEN @sdate AND @edate AND
@@ -209,7 +209,7 @@ public partial class Admin_Default : System.Web.UI.Page
                 {
                     if (dr.Read())
                     {
-                        ltPendingRCount.Text = dr["RCount"].ToString();
+                        ltDailyPendingRCount.Text = dr["RCount"].ToString();
                     }
                 }
             }
@@ -262,5 +262,13 @@ public partial class Admin_Default : System.Web.UI.Page
                 }
             }
         }
+    }
+
+    protected void tmrDaily_Tick(object sender, EventArgs e)
+    {
+        GetDReservationsCount();
+        GetDPendingReservationsCount();
+        GetDUnpaidReservations();
+        GetDTotalUsers();
     }
 }

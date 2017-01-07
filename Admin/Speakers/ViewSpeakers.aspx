@@ -61,11 +61,11 @@
                                                 <td><%# Eval("SeminarSpeakerTel") %></td>
                                                 <td><%# Eval("SeminarSpeakerEmail") %></td>
                                                 <td><span class="label label-success"><%# Eval("SeminarSpeakerStatus") %></span</td>
-                                                <td><%# Eval("DateAdded", "{0: MMMM dd, yyyy}") %></td>
-                                                <td><%# Eval("DateModified", "{0: MMMM dd, yyyy}") %></td>
+                                                <td><%# Eval("DateAdded", "{0: dddd, MMMM d, yyyy}") %></td>
+                                                <td><%# Eval("DateModified", "{0: dddd, MMMM d, yyyy}") %></td>
                                                 <td>
                                                     <a href='UpdateSpeakers.aspx?ID=<%# Eval("SeminarSpeakerID") %>'>
-                                                        <asp:Label runat="server" ToolTip="Show Info"><i class="fa fa-search"></i></asp:Label></a>
+                                                        <asp:Label runat="server" ToolTip="Show Info"><i class="fa fa-edit"></i></asp:Label></a>
                                                 </td>
                                             </tr>
                                         </ItemTemplate>

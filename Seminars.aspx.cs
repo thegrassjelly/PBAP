@@ -140,7 +140,7 @@ public partial class Seminars : System.Web.UI.Page
                     (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
                     FROM Seminars
                     INNER JOIN SeminarSpeakers ON Seminars.SeminarSpeaker = SeminarSpeakers.SeminarSpeakerID
-                    WHERE SeminarArea = @topic
+                    WHERE SeminarArea = @topic AND Seminars.DateAdded BETWEEN @dateone AND @datetwo
                     ORDER BY SeminarDate ASC";
 
             }
@@ -151,7 +151,7 @@ public partial class Seminars : System.Web.UI.Page
                     (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
                     FROM Seminars
                     INNER JOIN SeminarSpeakers ON Seminars.SeminarSpeaker = SeminarSpeakers.SeminarSpeakerID
-                    WHERE SeminarSpeaker = @speaker
+                    WHERE SeminarSpeaker = @speaker AND Seminars.DateAdded BETWEEN @dateone AND @datetwo
                     ORDER BY SeminarDate ASC";
             }
             else if (!string.IsNullOrEmpty(txtTopic.Text) && !string.IsNullOrEmpty(txtSpeaker.Text))
@@ -161,8 +161,8 @@ public partial class Seminars : System.Web.UI.Page
                     (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
                     FROM Seminars
                     INNER JOIN SeminarSpeakers ON Seminars.SeminarSpeaker = SeminarSpeakers.SeminarSpeakerID
-                    WHERE SeminarSpeaker = @speaker AND
-                          SeminarArea = @topic
+                    WHERE SeminarSpeaker = @speaker AND 
+                          SeminarArea = @topic AND Seminars.DateAdded BETWEEN @dateone AND @datetwo
                     ORDER BY SeminarDate ASC";
             }
             else
@@ -172,6 +172,7 @@ public partial class Seminars : System.Web.UI.Page
                     (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
                     FROM Seminars
                     INNER JOIN SeminarSpeakers ON Seminars.SeminarSpeaker = SeminarSpeakers.SeminarSpeakerID
+                    WHERE Seminars.DateAdded BETWEEN @dateone AND @datetwo
                     ORDER BY SeminarDate ASC";
             }
 
@@ -428,55 +429,10 @@ public partial class Seminars : System.Web.UI.Page
     protected void lnkProfile_Click(object sender, EventArgs e)
     {
         GetAccountModalInfo();
+        GetReservationHistory();
+        GetPaymentHistory();
 
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "profileModal", "$('#profileModal').modal();", true);
-    }
-
-    private void GetAccountModalInfo()
-    {
-        upsuccess.Visible = false;
-        uperror.Visible = false;
-        upserverror.Visible = false;
-
-        using (var con = new SqlConnection(Helper.GetCon()))
-        using (var cmd = new SqlCommand())
-        {
-            con.Open();
-            cmd.Connection = con;
-            cmd.CommandText = @"SELECT UserFirstName, UserMidName, UserLastName,
-                UserCompany, UserPosition, UserEmail, UserMobileNo, UserAddress,
-                UserBday FROM Users WHERE UserID = @id";
-            cmd.Parameters.AddWithValue("@id", Session["userid"].ToString());
-            using (var dr = cmd.ExecuteReader())
-            {
-                if (dr.HasRows)
-                {
-                    if (dr.Read())
-                    {
-                        txtUpFN.Text = dr["UserFirstName"].ToString();
-                        txtUpMN.Text = dr["UserMidName"].ToString();
-                        txtUpLN.Text = dr["UserLastName"].ToString();
-                        txtUpComp.Text = dr["UserCompany"].ToString();
-                        txtUpPos.Text = dr["UserPosition"].ToString();
-                        txtUpEAdd.Text = dr["UserEmail"].ToString();
-                        txtUpMNo.Text = dr["UserMobileNo"].ToString();
-                        txtUpAddr.Text = dr["UserAddress"].ToString();
-                        DateTime bDay = DateTime.Parse(dr["UserBday"].ToString());
-                        txtUPDb.Text = bDay.ToString("yyyy-MM-dd");
-
-                        txtFN2.Text = dr["UserFirstName"].ToString();
-                        txtMN2.Text = dr["UserMidName"].ToString();
-                        txtLN2.Text = dr["UserLastName"].ToString();
-                        txtComp2.Text = dr["UserCompany"].ToString();
-                        txtPos2.Text = dr["UserPosition"].ToString();
-                        txtEadd2.Text = dr["UserEmail"].ToString();
-                        txtMNo2.Text = dr["UserMobileNo"].ToString();
-                        txtAddr2.Text = dr["UserAddress"].ToString();
-                        txtBday2.Text = bDay.ToString("yyyy-MM-dd");
-                    }
-                }
-            }
-        }
     }
 
     protected void lnkLogin_Click(object sender, EventArgs e)
@@ -555,7 +511,16 @@ public partial class Seminars : System.Web.UI.Page
                         ltCode.Text = dr["SeminarCode"].ToString();
                         ltRsvpHeader.Text = dr["SeminarTitle"].ToString();
                         ltRsvpArea.Text = dr["SeminarArea"].ToString();
-                        ltRsvpDate.Text = SeminarDate.ToString("MMMM dd yyyy");
+
+                        if (dr["SeminarDate"].ToString() == "1/1/1900 12:00:00 AM")
+                        {
+                            ltRsvpDate.Text = "TBA";
+                        }
+                        else
+                        {
+                            ltRsvpDate.Text = SeminarDate.ToString("MMMM dd yyyy");
+                        }
+
                         ltRsvpUnits.Text = dr["SeminarUnits"].ToString();
                         ltRsvpSpeaker.Text = dr["Speaker"].ToString();
                         ltRsvpVenue.Text = dr["SeminarLocation"].ToString();
@@ -564,7 +529,16 @@ public partial class Seminars : System.Web.UI.Page
                         txtConfirmCode.Text = dr["SeminarCode"].ToString();
                         txtConfirmTitle.Text = dr["SeminarTitle"].ToString();
                         txtConfirmCompt.Text = dr["SeminarArea"].ToString();
-                        txtConfirmDate.Text = SeminarDate.ToString("MMMM dd yyyy");
+
+                        if (dr["SeminarDate"].ToString() == "1/1/1900 12:00:00 AM")
+                        {
+                            txtConfirmDate.Text = "TBA";
+                        }
+                        else
+                        {
+                            txtConfirmDate.Text = SeminarDate.ToString("MMMM dd yyyy");
+                        }
+
                         txtConfirmUnit.Text = dr["SeminarUnits"].ToString();
                         txtConfirmSpeaker.Text = dr["Speaker"].ToString();
                         txtConfirmVenue.Text = dr["SeminarLocation"].ToString();
@@ -854,5 +828,120 @@ public partial class Seminars : System.Web.UI.Page
         }
 
         reservationsuccess.Visible = true;
+    }
+
+    protected void lvReservations_PagePropertiesChanging(object sender, PagePropertiesChangingEventArgs e)
+    {
+        dpReservations.SetPageProperties(e.StartRowIndex, e.MaximumRows, false);
+        GetReservationHistory();
+    }
+
+    protected void lvReservations_DataBound(object sender, EventArgs e)
+    {
+        dpReservations.Visible = dpReservations.PageSize < dpReservations.TotalRowCount;
+    }
+    
+    private void GetPaymentHistory()
+    {
+        using (var con = new SqlConnection(Helper.GetCon()))
+        using (var cmd = new SqlCommand())
+        {
+            con.Open();
+            cmd.Connection = con;
+            cmd.CommandText = @"SELECT SeminarCode, SeminarTitle, SeminarDate, Reservations.DateAdded AS RDate, 
+                    ReservationStatus, PaymentAmount, PaymentDate, PaymentStatus, PaymentType, VoucherCode 
+                    FROM Payments
+					INNER JOIN Reservations ON Payments.PaymentID = Reservations.PaymentID
+					INNER JOIN Seminars ON Reservations.SeminarID = Seminars.SeminarID
+					LEFT JOIN Vouchers ON Reservations.VoucherID = Vouchers.VoucherCode
+					WHERE Reservations.UserID = @id ORDER BY Reservations.DateAdded DESC";
+            cmd.Parameters.AddWithValue("@id", Session["userid"].ToString());
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataSet ds = new DataSet();
+            da.Fill(ds, "Payments");
+            lvPayments.DataSource = ds;
+            lvPayments.DataBind();
+        }
+    }
+
+    private void GetReservationHistory()
+    {
+        using (var con = new SqlConnection(Helper.GetCon()))
+        using (var cmd = new SqlCommand())
+        {
+            con.Open();
+            cmd.Connection = con;
+            cmd.CommandText = @"SELECT SeminarCode, SeminarTitle, SeminarArea, SeminarUnits,
+                    SeminarLocation, SeminarDate, SeminarFee, Reservations.DateAdded AS RDate, ReservationStatus,
+                    (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
+                    FROM Reservations
+                    INNER JOIN Seminars ON Reservations.SeminarID = Seminars.SeminarID
+                    INNER JOIN SeminarSpeakers ON Seminars.SeminarSpeaker = SeminarSpeakers.SeminarSpeakerID 
+                    WHERE Reservations.UserID = @id ORDER BY Reservations.DateAdded DESC";
+            cmd.Parameters.AddWithValue("@id", Session["userid"].ToString());
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataSet ds = new DataSet();
+            da.Fill(ds, "Reservations");
+            lvReservations.DataSource = ds;
+            lvReservations.DataBind();
+        }
+    }
+
+    private void GetAccountModalInfo()
+    {
+        upsuccess.Visible = false;
+        uperror.Visible = false;
+        upserverror.Visible = false;
+
+        using (var con = new SqlConnection(Helper.GetCon()))
+        using (var cmd = new SqlCommand())
+        {
+            con.Open();
+            cmd.Connection = con;
+            cmd.CommandText = @"SELECT UserFirstName, UserMidName, UserLastName,
+                UserCompany, UserPosition, UserEmail, UserMobileNo, UserAddress,
+                UserBday FROM Users WHERE UserID = @id";
+            cmd.Parameters.AddWithValue("@id", Session["userid"].ToString());
+            using (var dr = cmd.ExecuteReader())
+            {
+                if (dr.HasRows)
+                {
+                    if (dr.Read())
+                    {
+                        txtUpFN.Text = dr["UserFirstName"].ToString();
+                        txtUpMN.Text = dr["UserMidName"].ToString();
+                        txtUpLN.Text = dr["UserLastName"].ToString();
+                        txtUpComp.Text = dr["UserCompany"].ToString();
+                        txtUpPos.Text = dr["UserPosition"].ToString();
+                        txtUpEAdd.Text = dr["UserEmail"].ToString();
+                        txtUpMNo.Text = dr["UserMobileNo"].ToString();
+                        txtUpAddr.Text = dr["UserAddress"].ToString();
+                        DateTime bDay = DateTime.Parse(dr["UserBday"].ToString());
+                        txtUPDb.Text = bDay.ToString("yyyy-MM-dd");
+
+                        txtFN2.Text = dr["UserFirstName"].ToString();
+                        txtMN2.Text = dr["UserMidName"].ToString();
+                        txtLN2.Text = dr["UserLastName"].ToString();
+                        txtComp2.Text = dr["UserCompany"].ToString();
+                        txtPos2.Text = dr["UserPosition"].ToString();
+                        txtEadd2.Text = dr["UserEmail"].ToString();
+                        txtMNo2.Text = dr["UserMobileNo"].ToString();
+                        txtAddr2.Text = dr["UserAddress"].ToString();
+                        txtBday2.Text = bDay.ToString("yyyy-MM-dd");
+                    }
+                }
+            }
+        }
+    }
+
+    protected void lvPayments_PagePropertiesChanging(object sender, PagePropertiesChangingEventArgs e)
+    {
+        dpPayments.SetPageProperties(e.StartRowIndex, e.MaximumRows, false);
+        GetPaymentHistory();
+    }
+
+    protected void lvPayments_DataBound(object sender, EventArgs e)
+    {
+        dpPayments.Visible = dpPayments.PageSize < dpPayments.TotalRowCount;
     }
 }
