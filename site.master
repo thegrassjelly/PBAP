@@ -108,7 +108,7 @@
                     </div>
                     <a class="navbar-brand" href=""<%= Page.ResolveUrl("~/Default.aspx") %>""
                         style="font-size: 15px; margin-top: 10px;">
-                        <span>Professional Bookeepers Association of the Philippines Inc.,</span>
+                        <span>Professional Bookkeepers Association of the Philippines Inc.,</span>
                     </a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
