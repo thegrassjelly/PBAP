@@ -25,8 +25,8 @@ public partial class Admin_Speakers_AddSpeakers : System.Web.UI.Page
             cmd.Parameters.AddWithValue("@tel", txtMN.Text);
             cmd.Parameters.AddWithValue("@email", txtEAdd.Text);
             cmd.Parameters.AddWithValue("@status", ddlStatus.SelectedValue);
-            cmd.Parameters.AddWithValue("@dadd", DateTime.Now);
-            cmd.Parameters.AddWithValue("@dmod", DateTime.Now);
+            cmd.Parameters.AddWithValue("@dadd", Helper.PHTime());
+            cmd.Parameters.AddWithValue("@dmod", Helper.PHTime());
             cmd.ExecuteNonQuery();
 
             Response.Redirect("ViewSpeakers.aspx");

@@ -53,8 +53,8 @@ public partial class Admin_Seminars_AddSeminars : System.Web.UI.Page
             cmd.Parameters.AddWithValue("@speaker", ddlSpeaker.SelectedValue);
             cmd.Parameters.AddWithValue("@status", ddlStatus.SelectedValue);
             cmd.Parameters.AddWithValue("@price", txtPrice.Text);
-            cmd.Parameters.AddWithValue("@dadd", DateTime.Now);
-            cmd.Parameters.AddWithValue("@dmod", DateTime.Now);
+            cmd.Parameters.AddWithValue("@dadd", Helper.PHTime());
+            cmd.Parameters.AddWithValue("@dmod", Helper.PHTime());
             cmd.ExecuteNonQuery();
 
             Response.Redirect("ViewSeminars.aspx");

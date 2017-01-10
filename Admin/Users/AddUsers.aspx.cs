@@ -5,7 +5,7 @@ public partial class Admin_Users_AddUsers : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        // Helper.ValidateAdmin();
+        Helper.ValidateAdmin();
     }
 
     protected void btnSubmit_Click(object sender, EventArgs e)
@@ -32,7 +32,7 @@ public partial class Admin_Users_AddUsers : System.Web.UI.Page
             cmd.Parameters.AddWithValue("@addr", txtAddr.Text);
             cmd.Parameters.AddWithValue("@status", ddlStatus.SelectedValue);
             cmd.Parameters.AddWithValue("@type", ddlType.SelectedValue);
-            cmd.Parameters.AddWithValue("@dadded", DateTime.Now);
+            cmd.Parameters.AddWithValue("@dadded", Helper.PHTime());
             cmd.ExecuteNonQuery();
 
             Response.Redirect("ViewUsers.aspx");

@@ -183,6 +183,12 @@
                         <li><a href="<%= Page.ResolveUrl("~/Admin/Speakers/ViewSpeakers.aspx") %>"><i class="fa fa-list"></i>View Speakers</a></li>
                     </ul>
                 </li>
+                <li>
+                    <a href="javascript:;"><i class="fa fa-cogs"></i><span>Logs</span></a>
+                    <ul class="acc-menu">
+                        <li><a href="<%= Page.ResolveUrl("~/Admin/Logs/ViewLogins.aspx") %>"><i class="fa fa-list"></i>User Logins</a></li>
+                    </ul>
+                </li>
 <%--                <li>
                     <a href="javascript:;"><i class="fa fa-bank"></i><span>Payments</span></a>
                     <ul class="acc-menu">

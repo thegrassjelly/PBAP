@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Admin/admin.master" AutoEventWireup="true" CodeFile="UserHistory.aspx.cs" Inherits="Admin_Users_UserHistory" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-    <i class="fa fa-calendar"></i> Reservation & Payment History -
+    <i class="fa fa-calendar"></i> Misc Details -
     <asp:Literal ID="ltName" runat="server" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="Server">

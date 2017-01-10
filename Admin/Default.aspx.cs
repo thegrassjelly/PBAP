@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 public partial class Admin_Default : System.Web.UI.Page
 {
-    static string _sDate;
-    static string _eDate;
+    static DateTime _sDate;
+    static DateTime _eDate;
     static string _dSDate;
     static string _dEDate;
 
@@ -31,12 +27,36 @@ public partial class Admin_Default : System.Web.UI.Page
             GetDPendingReservationsCount();
             GetDUnpaidReservations();
             GetDTotalUsers();
+
+            GetTopReserved();
+        }
+    }
+
+    private void GetTopReserved()
+    {
+        using (var con = new SqlConnection(Helper.GetCon()))
+        using (var cmd = new SqlCommand())
+        {
+            con.Open();
+            cmd.Connection = con;
+            cmd.CommandText = @"SELECT DISTINCT TOP 4 COUNT(Reservations.SeminarID) AS TotalCount, SeminarTitle, SeminarArea,
+                (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS SpeakerName 
+                FROM Reservations
+                INNER JOIN Seminars ON Reservations.SeminarID = Seminars.SeminarID
+                INNER JOIN SeminarSpeakers ON Seminars.SeminarSpeaker = SeminarSpeakers.SeminarSpeakerID
+                GROUP BY SeminarTitle, SeminarArea, SeminarSpeakerTitle, SeminarSpeakerFN, SeminarSpeakerLN
+                ORDER BY TotalCount DESC";
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataSet ds = new DataSet();
+            da.Fill(ds, "InventoryMovement");
+            lvTopSales.DataSource = ds;
+            lvTopSales.DataBind();
         }
     }
 
     private void GetDaily()
     {
-        DateTime now = DateTime.Now;
+        DateTime now = Helper.PHTime();
         var startDate = new DateTime(now.Year, now.Month, now.Day);
         var endDate = startDate.AddDays(1).AddMinutes(-1);
          
@@ -51,12 +71,12 @@ public partial class Admin_Default : System.Web.UI.Page
 
     private void GetMonthly()
     {
-        DateTime now = DateTime.Now;
+        DateTime now = Helper.PHTime();
         var startDate = new DateTime(now.Year, now.Month, 1);
         var endDate = startDate.AddMonths(1).AddDays(-1);
 
-        _sDate = startDate.ToString();
-        _eDate = endDate.ToString();
+        _sDate = startDate;
+        _eDate = endDate;
 
         ltCurrentMonth.Text = startDate.ToString("MMMM", CultureInfo.InvariantCulture);
         ltCurrentMonth2.Text = startDate.ToString("MMMM", CultureInfo.InvariantCulture);
@@ -270,5 +290,10 @@ public partial class Admin_Default : System.Web.UI.Page
         GetDPendingReservationsCount();
         GetDUnpaidReservations();
         GetDTotalUsers();
+    }
+
+    protected void tmrTopReserved_Tick(object sender, EventArgs e)
+    {
+        GetTopReserved();
     }
 }

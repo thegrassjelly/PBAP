@@ -98,7 +98,7 @@ public partial class Admin_Users_UpdateUsers : System.Web.UI.Page
             cmd.Parameters.AddWithValue("@addr", txtAddr.Text);
             cmd.Parameters.AddWithValue("@status", ddlStatus.SelectedValue);
             cmd.Parameters.AddWithValue("@type", ddlType.SelectedValue);
-            cmd.Parameters.AddWithValue("@dmod", DateTime.Now);
+            cmd.Parameters.AddWithValue("@dmod", Helper.PHTime());
             cmd.ExecuteNonQuery();
         }
 

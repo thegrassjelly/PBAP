@@ -56,7 +56,7 @@ public partial class Admin_Reservations_ReservationDetails : System.Web.UI.Page
                         }
                         else
                         {
-                            DateTime PayDate = DateTime.Now;
+                            DateTime PayDate = Helper.PHTime();
                             txtPaymentDate.Text = PayDate.ToString("yyyy-MM-dd");
                         }
 
@@ -177,7 +177,7 @@ public partial class Admin_Reservations_ReservationDetails : System.Web.UI.Page
                 WHERE ReservationID = @id";
             cmd.Parameters.AddWithValue("@id", Request.QueryString["ID"]);
             cmd.Parameters.AddWithValue("@status", ddlRStatus.SelectedValue);
-            cmd.Parameters.AddWithValue("@dmod", DateTime.Now);
+            cmd.Parameters.AddWithValue("@dmod", Helper.PHTime());
             cmd.ExecuteNonQuery();
         }
 
