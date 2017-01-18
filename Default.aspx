@@ -45,11 +45,10 @@
                 </figure>
             </div>
             <div class="mu-slider-content">
-                <h4>Exclusivly For Education</h4>
+                <h4>Latest Courses Offered</h4>
                 <span></span>
-                <h2>Education For Everyone</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor amet error eius reiciendis eum sint unde eveniet deserunt est debitis corporis temporibus recusandae accusamus.</p>
-                <a href="#" class="mu-read-more-btn">Read More</a>
+                <h2>For Bookeepers and PRC-BOA accredited continuing professionals</h2>
+                <p>Courses offered are for bookkeepers as well as PRC-BOA accredited continuing professional development [CPD] courses for Certified Public Accountants in the Philippines.</p>
             </div>
         </div>
         <!-- Start single slider item -->
@@ -103,15 +102,10 @@
                                         <h2>About Us</h2>
                                     </div>
                                     <!-- End Title -->
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum pariatur fuga eveniet soluta aspernatur rem, nam voluptatibus voluptate voluptates sapiente, inventore. Voluptatem, maiores esse molestiae.</p>
-                                    <ul>
-                                        <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                        <li>Saepe a minima quod iste libero rerum dicta!</li>
-                                        <li>Voluptas obcaecati, iste porro fugit soluta consequuntur. Veritatis?</li>
-                                        <li>Ipsam deserunt numquam ad error rem unde, omnis.</li>
-                                        <li>Repellat assumenda adipisci pariatur ipsam eos similique, explicabo.</li>
-                                    </ul>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perspiciatis quaerat harum facilis excepturi et? Mollitia!</p>
+                                    <p>This TESDA accredited association of bookkeepers  was organized to provide support and standards for the bookkeeping industry. This is achieved by creating common standards for the industry that bookkeepers can work towards and that allow the users of bookkeepers to know what level of knowledge a bookkeeper they hire has.</p>
+                                    <p>The definition of a bookkeeper is broad and wide and open to interpretation. Each country can have its own standards and anyone can call themselves a bookkeeper while not having any qualifications or knowledge of the industry. The method of obtaining a bookkeeping qualification vary.  In the Philippines, one has to take  and pass the examination and eventually the title BOOKKEEPING NCIII.</p>
+                                    <p>A person have to sit exams, obtain to obtain the title. The examination is a practice-based examination. a qualification based on your experience.  In many countries there are competing bookkeeper associations, but their qualifications are achieved in different ways and their knowledge levels can be different.</p>
+                                    <p>Bookkeeping associations can provide help on bookkeeping issues and professional development for their members. They can also lobby on behalf of their members to help promote their interests. They can as a body promote the standards of bookkeeping and market the benefits of using a qualified bookkeeper.</p>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6">
