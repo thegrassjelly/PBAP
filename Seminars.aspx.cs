@@ -907,12 +907,13 @@ public partial class Seminars : System.Web.UI.Page
 
     protected void lvSeminars_DataBound(object sender, EventArgs e)
     {
-
+        dpSeminars.Visible = dpSeminars.PageSize < dpSeminars.TotalRowCount;
     }
 
     protected void lvSeminars_PagePropertiesChanging(object sender, PagePropertiesChangingEventArgs e)
     {
-
+        dpSeminars.SetPageProperties(e.StartRowIndex, e.MaximumRows, false);
+        GetSeminars();
     }
 
     protected void txtTopic_TextChanged(object sender, EventArgs e)
