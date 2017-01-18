@@ -558,7 +558,7 @@ img {
  ABOUT US COUNTER SECTION
 ====================*/
 #mu-abtus-counter {
-  background-image: url("../img/counter-bg.png");
+  background-image: url("../img/counter-bg.jpg");
   background-repeat: no-repeat;
   background-size: 100%;
   display: inline;
@@ -903,7 +903,7 @@ img {
 ====================*/
 #mu-testimonial {
   background-attachment: fixed;
-  background-image: url("../img/testimonial-bg.png");
+  background-image: url("../img/testimonial-bg.jpg");
   background-position: center center;
   background-size: cover;
   display: inline;
