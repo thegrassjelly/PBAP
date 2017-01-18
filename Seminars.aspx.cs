@@ -135,7 +135,7 @@ public partial class Seminars : System.Web.UI.Page
 
             if (!string.IsNullOrEmpty(txtTopic.Text) && string.IsNullOrEmpty(txtSpeaker.Text))
             {
-                cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
+                cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits, SeminarCode,
                     SeminarLocation, SeminarDate, 
                     (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
                     FROM Seminars
@@ -146,7 +146,7 @@ public partial class Seminars : System.Web.UI.Page
             }
             else if (string.IsNullOrEmpty(txtTopic.Text) && !string.IsNullOrEmpty(txtSpeaker.Text))
             {
-                cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
+                cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits, SeminarCode,
                     SeminarLocation, SeminarDate, 
                     (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
                     FROM Seminars
@@ -156,7 +156,7 @@ public partial class Seminars : System.Web.UI.Page
             }
             else if (!string.IsNullOrEmpty(txtTopic.Text) && !string.IsNullOrEmpty(txtSpeaker.Text))
             {
-                cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
+                cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits, SeminarCode,
                     SeminarLocation, SeminarDate, 
                     (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
                     FROM Seminars
@@ -167,7 +167,7 @@ public partial class Seminars : System.Web.UI.Page
             }
             else
             {
-                cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits,
+                cmd.CommandText = @"SELECT SeminarID, SeminarTitle, SeminarArea, SeminarUnits, SeminarCode,
                     SeminarLocation, SeminarDate, 
                     (SeminarSpeakerTitle + ' ' + SeminarSpeakerFN + ' ' + SeminarSpeakerLN) AS Speaker 
                     FROM Seminars

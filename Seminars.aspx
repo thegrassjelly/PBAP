@@ -236,6 +236,7 @@
                             <thead>
                                 <tr>
                                     <th>SCHEDULE</th>
+                                    <th>SEMINAR CODE</th>
                                     <th>TOPIC TITLES</th>
                                     <th>COMPETENCY</th>
                                     <th>CREDIT UNITS</th>
@@ -254,6 +255,7 @@
                                                 <%# Eval("SeminarDate").ToString() == "1/1/1900 12:00:00 AM" ?
                                                         "TBA" : DateTime.Parse(Eval("SeminarDate").ToString()).ToString("dddd - MMMM dd") %> 
                                             </td>
+                                            <td><%# Eval("SeminarCode") %></td>
                                             <td>
                                                 <asp:Button ID="btnModal" CommandName="topicDesc"
                                                     class="btn btn-sm btn-primary" runat="server" Text='<%# Eval("SeminarTitle") %>'
