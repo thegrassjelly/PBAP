@@ -9,7 +9,7 @@
         <div class="mu-slider-single">
             <div class="mu-slider-img">
                 <figure>
-                    <img src="img/slider/1.jpg" alt="img">
+                    <img src="img/slider/1.png" alt="img">
                 </figure>
             </div>
             <div class="mu-slider-content">
@@ -25,7 +25,7 @@
         <div class="mu-slider-single">
             <div class="mu-slider-img">
                 <figure>
-                    <img src="img/slider/2.jpg" alt="img">
+                    <img src="img/slider/2.png" alt="img">
                 </figure>
             </div>
             <div class="mu-slider-content">
@@ -41,7 +41,7 @@
         <div class="mu-slider-single">
             <div class="mu-slider-img">
                 <figure>
-                    <img src="img/slider/3.jpg" alt="img">
+                    <img src="img/slider/3.png" alt="img">
                 </figure>
             </div>
             <div class="mu-slider-content">
@@ -117,7 +117,7 @@
                             <div class="col-lg-6 col-md-6">
                                 <div class="mu-about-us-right">
                                     <a id="mu-abtus-video" href="https://www.youtube.com/embed/HN3pm9qYAUs" target="mutube-video">
-                                        <img src="img/about-us.jpg" alt="img">
+                                        <img src="img/about-us.png" alt="img">
                                     </a>
                                 </div>
                             </div>
